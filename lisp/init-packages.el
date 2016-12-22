@@ -14,6 +14,8 @@
 			  elpy
 			  magit
 			  popwin
+			  flycheck
+			  py-autopep8
               )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -46,10 +48,18 @@
 ;(add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
 (smartparens-global-mode t)
 
-
 ;; config elpy
 (elpy-enable)
 
+;; config flycheck
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; config pep8
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+(elpy-use-ipython)
 
 ; config popwin
 (require 'popwin)

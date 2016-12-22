@@ -11,9 +11,8 @@
 (setq split-height-threshold nil)
 (setq split-width-threshold 0)
 
-; config font
+;; config font
 (add-to-list 'default-frame-alist
-             '(font . "Consolas-11"))
-
+             '(font . "Consolas-9"))
+(set-face-bold-p 'bold 1)
 (provide 'init-ui)
-
