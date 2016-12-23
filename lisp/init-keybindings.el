@@ -19,5 +19,7 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
+(global-set-key (kbd "C-x C-;") 'toggle-comment-on-line)
+
 
 (provide 'init-keybindings)

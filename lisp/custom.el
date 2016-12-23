@@ -7,7 +7,7 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(company-idle-delay 0.1)
+ '(company-idle-delay 0.05)
  '(company-minimum-prefix-length 1)
  '(compilation-message-face (quote default))
  '(custom-enabled-themes (quote (monokai)))

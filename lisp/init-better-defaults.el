@@ -1,3 +1,9 @@
+;; self defined functions are here
+(defun toggle-comment-on-line ()
+  "comment or uncomment current line"
+  (interactive)
+  (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+
 (defun indent-buffer ()
   "Indent the currently visited buffer."
   (interactive)
