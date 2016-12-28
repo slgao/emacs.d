@@ -13,6 +13,6 @@
 
 ;; config font
 (add-to-list 'default-frame-alist
-             '(font . "Consolas-11"))
+             '(font . "Consolas-13"))
 (set-face-bold-p 'bold 1)
 (provide 'init-ui)

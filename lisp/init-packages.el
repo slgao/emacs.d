@@ -8,9 +8,8 @@
                           company
                           monokai-theme
 			  hungry-delete
+			  exec-path-from-shell
 			  swiper
-              dired+
-              dired-sort
 			  counsel
 			  smartparens
 			  elpy
@@ -43,6 +42,9 @@
 (require 'hungry-delete)
 (global-hungry-delete-mode)
 
+;; config exec-path-from-shell
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;; config swiper
 (ivy-mode 1)
@@ -66,10 +68,10 @@
 (setq jedi:complete-on-dot t)
 
 ;; config flycheck -- maybe slow
-;; (when (require 'flycheck nil t)
-;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
-
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode)
+  (setq flycheck-highlighting-mode 'lines))
 
 ;; config pep8
 (require 'py-autopep8)

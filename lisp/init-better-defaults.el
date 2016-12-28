@@ -47,14 +47,14 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(when (memq window-system '(mac ns))
+  (setq mac-option-key-is-meta t)
+  (setq mac-right-option-modifier nil))
 
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'always)
 (put 'dired-find-alternate-file 'disabled nil)
 (require 'dired-x)
 (setq dired-dwim-target t)
-
-;; change virtual machine evironment
-(pyvenv-activate (expand-file-name "C:/Anaconda3/envs/py27"))
 
 (provide 'init-better-defaults)
