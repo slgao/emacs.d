@@ -54,4 +54,7 @@
 (require 'dired-x)
 (setq dired-dwim-target t)
 
+;; change virtual machine evironment
+(pyvenv-activate (expand-file-name "C:/Anaconda3/envs/py27"))
+
 (provide 'init-better-defaults)

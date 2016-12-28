@@ -9,6 +9,8 @@
                           monokai-theme
 			  hungry-delete
 			  swiper
+              dired+
+              dired-sort
 			  counsel
 			  smartparens
 			  elpy
@@ -64,10 +66,10 @@
 (setq jedi:complete-on-dot t)
 
 ;; config flycheck -- maybe slow
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode)
-  (setq flycheck-highlighting-mode 'lines))
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+
 
 ;; config pep8
 (require 'py-autopep8)
