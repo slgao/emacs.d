@@ -15,4 +15,10 @@
 (add-to-list 'default-frame-alist
              '(font . "Consolas-11"))
 (set-face-bold-p 'bold 1)
+
+;; configure mode-line to show date, time and column number 
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(setq column-number-mode t)
+
 (provide 'init-ui)
