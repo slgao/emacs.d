@@ -40,4 +40,7 @@
 
 (move-lines-binding)
 
+;; kbd for magit
+(global-set-key (kbd "C-x g") ’magit-status)
+
 (provide 'init-keybindings)
