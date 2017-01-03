@@ -38,9 +38,10 @@
 ;; kbd to refresh buffer
 (global-set-key (kbd "C-c r") 'revert-buffer)
 
+;; kbd to move line or regions up and down
 (move-lines-binding)
 
 ;; kbd for magit
-(global-set-key (kbd "C-x g") ’magit-status)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 (provide 'init-keybindings)
