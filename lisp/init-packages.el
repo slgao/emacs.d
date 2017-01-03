@@ -25,6 +25,8 @@
 			  ace-window
 			  ace-jump-mode
 			  undo-tree
+			  neotree
+			  all-the-icons
               )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -136,5 +138,14 @@
 ;; add undo-tree mode 
 (require 'undo-tree)
 (global-undo-tree-mode)
+
+;; add neotree mode 
+(require 'neotree)
+(setq neo-smart-open t)
+
+;; add all-the-icons
+(require 'all-the-icons)
+;; the fonts in all-the-icons packages should be installed if icons neo-theme is used
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 (provide 'init-packages)

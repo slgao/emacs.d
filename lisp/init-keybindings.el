@@ -44,4 +44,7 @@
 ;; kbd for magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
+;; kbd to toggle neotree
+(global-set-key [f8] 'neotree-toggle)
+
 (provide 'init-keybindings)
