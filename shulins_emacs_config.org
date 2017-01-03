@@ -5,16 +5,20 @@
 ** integrate emacs config from different modules
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
 (defun open-my-init-file()
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
+(org-babel-load-file (expand-file-name "lisp/init-utils.org" user-emacs-directory))
 (require 'init-packages)
 (require 'init-ui)
 (require 'init-better-defaults)
 (require 'init-org)
 (require 'init-keybindings)
-(require 'init-utils)
+;(require 'init-utils)
+
+(require 'browse-kill-ring)
 
 (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
 

@@ -20,6 +20,11 @@
 			  popwin
 			  flycheck
 			  py-autopep8
+			  emmet-mode
+			  web-mode
+			  ace-window
+			  ace-jump-mode
+			  undo-tree
               )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -35,8 +40,17 @@
       (package-install pkg))))
 (setq package-selected-packages shulin/packages)
 
-
+;; config company-mode, reset company-active-map
 (global-company-mode t)
+(eval-after-load 'company
+  '(progn
+     (define-key company-active-map (kbd "C-n") 'company-select-next)
+     (define-key company-active-map [tab] 'company-select-next)
+     (define-key company-active-map (kbd "C-p") 'company-select-previous)
+     (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
+     (define-key company-active-map (kbd "<escape>") 'company-abort)
+))
+(setq company-selection-wrap-around t)
 
 
 (require 'hungry-delete)
@@ -55,6 +69,7 @@
 (smartparens-global-mode t)
 
 ;; config python evn
+;; use function M-x pyvenv-activate to select python environment manually
 (setenv "WORKON_HOME" "C:/Anaconda3/envs")
 (pyvenv-mode 1)
 
@@ -81,5 +96,45 @@
 ; config popwin
 (require 'popwin)
 (popwin-mode t)
+
+
+;;;;;;;;;;;;;;
+;emmet-mode
+;;;;;;;;;;;;;
+(require 'emmet-mode)
+(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+(add-hook 'html-mode-hook 'emmet-mode)
+(add-hook 'web-mode-hook 'emmet-mode)
+(add-hook 'css-mode-hook  'emmet-mode)
+
+
+;;;;;;;;;;;;;;
+;web-mode
+;;;;;;;;;;;;;;;
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; config ace-window
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(setq aw-background nil)
+
+;; config move-lines
+(require 'move-lines)
+
+;; add undo-tree mode 
+(require 'undo-tree)
+(global-undo-tree-mode)
 
 (provide 'init-packages)
