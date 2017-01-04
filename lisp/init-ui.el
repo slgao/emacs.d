@@ -16,9 +16,10 @@
              '(font . "Consolas-11"))
 (set-face-bold-p 'bold 1)
 
-;; configure mode-line to show date, time and column number 
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
+;; configure mode-line to show date, time and column number
 (setq column-number-mode t)
+(setq display-time-day-and-date t)
+(setq display-time-24hr-format t)
+(display-time)
 
 (provide 'init-ui)
