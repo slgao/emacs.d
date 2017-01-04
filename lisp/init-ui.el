@@ -22,4 +22,8 @@
 (setq display-time-24hr-format t)
 (display-time)
 
+;; change selected region color
+;; probably need to configure monokai color first
+;; (set-face-attribute 'region nil :background "#7FB3D5")
+
 (provide 'init-ui)

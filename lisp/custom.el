@@ -29,7 +29,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (flycheck popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
+    (flycheck popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)) t)
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
@@ -64,4 +64,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight bold :height 90 :width normal))))
- '(bold ((t (:weight bold)))))
+ '(bold ((t (:weight bold))))
+ '(iedit-occurrence ((t (:inherit region :background "cornflower blue" :underline t)))))

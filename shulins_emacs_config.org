@@ -4,24 +4,33 @@
 #+END_SRC
 ** integrate emacs config from different modules
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/lisp")
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
-(defun open-my-init-file()
-  (interactive)
-  (find-file "~/.emacs.d/init.el"))
+  (add-to-list 'load-path "~/.emacs.d/lisp")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp")
+  ;; also include subdirectories
+  (progn (cd "~/.emacs.d/site-lisp")
+         (normal-top-level-add-subdirs-to-load-path))
 
-(org-babel-load-file (expand-file-name "lisp/init-utils.org" user-emacs-directory))
-(require 'init-packages)
-(require 'init-ui)
-(require 'init-better-defaults)
-(require 'init-org)
-(require 'init-keybindings)
-;(require 'init-utils)
+  (defun open-my-init-file()
+    (interactive)
+    (find-file "~/.emacs.d/init.el"))
 
-(require 'browse-kill-ring)
+  ;; packages in site-lisp folder (third party package)
+  ;; this is newer version nadvice.el (extended) which will overwrite the
+  ;; original nadvice.el
+  (require 'nadvice_)
 
-(setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
+  ;; emacs init files 
+  (org-babel-load-file (expand-file-name "lisp/init-utils.org" user-emacs-directory))
+  (require 'init-packages)
+  (require 'init-ui)
+  (require 'init-org)
+  (require 'init-keybindings)
+  (require 'browse-kill-ring)
+  (require 'init-better-defaults)
 
-(load-file custom-file)
+
+  (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
+
+  (load-file custom-file)
 #+END_SRC
 

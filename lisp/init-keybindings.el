@@ -47,4 +47,8 @@
 ;; kbd to toggle neotree
 (global-set-key [f8] 'neotree-toggle)
 
+;; config for expand-region
+;; the original recommended kbd "C-=" somehow does not take effect
+(global-set-key (kbd "C-+") 'er/expand-region)
+
 (provide 'init-keybindings)
