@@ -50,5 +50,9 @@
 ;; config for expand-region
 ;; the original recommended kbd "C-=" somehow does not take effect
 (global-set-key (kbd "C-+") 'er/expand-region)
+   
+;; kbd for iedit mode 
+(global-set-key (kbd "C-;") 'iedit-mode)
+(global-set-key (kbd "C-x r <return>") 'iedit-rectangle-mode)
 
 (provide 'init-keybindings)
