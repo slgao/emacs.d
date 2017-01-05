@@ -45,8 +45,8 @@
 ;; highlight parenthesis as well if the cursor is surrounded by parenthesises
 ;; src from http://book.emacs-china.org/#orgheadline24
 (define-advice show-paren-function (:around (fn) fix-show-paren-function)
- "Highlight enclosing parens."
- (cond ((looking-at-p "\\s(") (funcall fn))
+  "Highlight enclosing parens."
+  (cond ((looking-at-p "\\s(") (funcall fn))
 	(t (save-excursion
 	     (ignore-errors (backward-up-list))
 	     (funcall fn)))))
@@ -90,24 +90,36 @@
 ;; src from http://book.emacs-china.org/#orgheadline27
 ;; only javascript was used as an example 
 (defun js2-imenu-make-index ()
-      (interactive)
-      (save-excursion
-	;; (setq imenu-generic-expression '((nil "describe\\(\"\\(.+\\)\"" 1)))
-	(imenu--generic-function '(("describe" "\\s-*describe\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
-				   ("it" "\\s-*it\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
-				   ("test" "\\s-*test\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
-				   ("before" "\\s-*before\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
-				   ("after" "\\s-*after\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
-				   ("Function" "function[ \t]+\\([a-zA-Z0-9_$.]+\\)[ \t]*(" 1)
-				   ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
-				   ("Function" "^var[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
-				   ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*()[ \t]*{" 1)
-				   ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*:[ \t]*function[ \t]*(" 1)
-				   ("Task" "[. \t]task([ \t]*['\"]\\([^'\"]+\\)" 1)))))
+  (interactive)
+  (save-excursion
+    ;; (setq imenu-generic-expression '((nil "describe\\(\"\\(.+\\)\"" 1)))
+    (imenu--generic-function '(("describe" "\\s-*describe\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+			       ("it" "\\s-*it\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+			       ("test" "\\s-*test\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+			       ("before" "\\s-*before\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+			       ("after" "\\s-*after\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+			       ("Function" "function[ \t]+\\([a-zA-Z0-9_$.]+\\)[ \t]*(" 1)
+			       ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
+			       ("Function" "^var[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
+			       ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*()[ \t]*{" 1)
+			       ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*:[ \t]*function[ \t]*(" 1)
+			       ("Task" "[. \t]task([ \t]*['\"]\\([^'\"]+\\)" 1)))))
 (add-hook 'js2-mode-hook
-	      (lambda ()
-		(setq imenu-create-index-function 'js2-imenu-make-index)))
+	  (lambda ()
+	    (setq imenu-create-index-function 'js2-imenu-make-index)))
 
 (global-set-key (kbd "M-s i") 'counsel-imenu)
+
+;; set msys path on MS Windows system
+(if (eq system-type 'windows-nt)
+    (setenv "PATH"
+	    (concat
+	     ;; Change this with your path to MSYS bin directory
+	     "C:\\MinGW\\msys\\1.0\\bin;"
+	     (getenv "PATH")))
+  )
+
+;; add highlight for pyx files
+(add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode))
 
 (provide 'init-better-defaults)

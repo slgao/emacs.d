@@ -12,8 +12,14 @@
 (setq split-width-threshold 0)
 
 ;; config font
-(add-to-list 'default-frame-alist
-             '(font . "Consolas-13"))
+;; make mac os font bigger
+(if (eq system-type 'darwin)
+    (add-to-list 'default-frame-alist
+		 '(font . "Consolas-13"))
+  (add-to-list 'default-frame-alist
+	       '(font . "Consolas-9"))
+  )
+
 (set-face-bold-p 'bold 1)
 
 ;; configure mode-line to show date, time and column number
