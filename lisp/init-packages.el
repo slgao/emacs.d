@@ -98,13 +98,13 @@
 					;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 (elpy-use-ipython)
 
-					; config popwin
+;; config popwin
 (require 'popwin)
 (popwin-mode t)
 
 
 ;;;;;;;;;;;;;;
-					;emmet-mode
+;;emmet-mode
 ;;;;;;;;;;;;;
 (require 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
@@ -114,7 +114,7 @@
 
 
 ;;;;;;;;;;;;;;
-					;web-mode
+;;web-mode
 ;;;;;;;;;;;;;;;
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
