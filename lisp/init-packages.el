@@ -70,7 +70,7 @@
 (setq ivy-use-virtual-buffers t)
 
 ;; config smartparens
-					;(add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
 (smartparens-global-mode t)
 
 ;; config python evn

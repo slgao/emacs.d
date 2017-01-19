@@ -122,4 +122,12 @@
 ;; add highlight for pyx files
 (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode))
 
+(add-hook 'python-mode-hook
+	  (	  lambda()
+	    (local-set-key (kbd "C-c <right>") 'hs-show-block)
+	    (local-set-key (kbd "C-c <left>")  'hs-hide-block)
+	    (local-set-key (kbd "C-c <up>")    'hs-hide-all)
+	    (local-set-key (kbd "C-c <down>")  'hs-show-all)
+	    (hs-minor-mode t)))
+
 (provide 'init-better-defaults)
