@@ -13,3 +13,5 @@
 (require 'ob-tangle)
 (org-babel-load-file (expand-file-name "shulins_emacs_config.org" user-emacs-directory))
 (put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)

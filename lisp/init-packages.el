@@ -79,7 +79,9 @@
 (pyvenv-mode 1)
 
 ;; config elpy
+
 (elpy-enable)
+(elpy-use-ipython)
 
 ;; config jedi
 (require 'jedi)
@@ -96,7 +98,7 @@
 ;; config pep8
 (require 'py-autopep8)
 					;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-(elpy-use-ipython)
+
 
 ;; config popwin
 (require 'popwin)

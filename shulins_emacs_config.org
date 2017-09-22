@@ -27,7 +27,7 @@
   (require 'init-keybindings)
   (require 'browse-kill-ring)
   (require 'init-better-defaults)
-
+  (require 'flycheck-virtualenv)
 
   (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
 

@@ -55,4 +55,11 @@
 (global-set-key (kbd "C-;") 'iedit-mode)
 (global-set-key (kbd "C-x r <return>") 'iedit-rectangle-mode)
 
+;; kbd for kill word at point
+(global-set-key (kbd "C-c k") 'my-kill-word-at-point)
+
+;; kbd for smart open line and smart open line above
+(global-set-key (kbd "M-o") 'smart-open-line)
+(global-set-key (kbd "M-O") 'smart-open-line-above)
+
 (provide 'init-keybindings)

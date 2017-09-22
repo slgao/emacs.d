@@ -31,7 +31,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (flycheck popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)) t)
+    (flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)

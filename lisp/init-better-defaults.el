@@ -130,4 +130,16 @@
 	    (local-set-key (kbd "C-c <down>")  'hs-show-all)
 	    (hs-minor-mode t)))
 
+;; insert parentheses
+(global-set-key (kbd "M-[") 'insert-pair)
+(global-set-key (kbd "M-{") 'insert-pair)
+(global-set-key (kbd "M-\"") 'insert-pair)
+(global-set-key (kbd "M-)") 'delete-pair)
+
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+(add-hook 'flycheck-mode-hook #'flycheck-virtualenv-setup)
+
 (provide 'init-better-defaults)
