@@ -30,6 +30,8 @@
 			  js2-refactor
 			  expand-region
 			  iedit
+			  multiple-cursors
+			  ein
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -183,4 +185,20 @@
 ;; config iedit
 (require 'iedit)
 
+;; config multiple-cursors
+(require 'multiple-cursors)
+
+(require 'ein)
+(require 'ein-loaddefs)
+(require 'ein-notebook)
+(require 'ein-subpackages)
+;; enable auto-complete for ein
+(setq ein:use-auto-complete t)
+;; Or, to enable "superpack" (a little bit hacky improvements):
+;; (setq ein:use-auto-complete-superpack t)
+;; enable smartrep
+(setq ein:use-smartrep t)
+
+
 (provide 'init-packages)
+
