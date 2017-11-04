@@ -14,7 +14,7 @@
  '(custom-enabled-themes (quote (monokai)))
  '(custom-safe-themes
    (quote
-    ("c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "31b2145c933e41fbbda48b15278cdcce3779db7e92ca434ad3044b3392ad6ae3" default)))
+    ("cdfc5c44f19211cfff5994221078d7d5549eeb9feda4f595a2fd8ca40467776c" "4e63466756c7dbd78b49ce86f5f0954b92bf70b30c01c494b37c586639fa3f6f" "8ed752276957903a270c797c4ab52931199806ccd9f0c3bb77f6f4b9e71b9272" "c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "31b2145c933e41fbbda48b15278cdcce3779db7e92ca434ad3044b3392ad6ae3" default)))
  '(display-time-mode t)
  '(fci-rule-color "#3C3D37")
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
@@ -29,9 +29,12 @@
      ("#F309DF" . 85)
      ("#3C3D37" . 100))))
  '(magit-diff-use-overlays nil)
+ '(org-agenda-files
+   (quote
+    ("~/.emacs.d/org/TODO.org" "~/.emacs.d/org-gcal/gcal.org")))
  '(package-selected-packages
    (quote
-    (flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
+    (company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
@@ -65,6 +68,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight bold :height 90 :width normal))))
+ '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight bold :height 100 :width normal))))
  '(bold ((t (:weight bold))))
  '(iedit-occurrence ((t (:inherit region :background "cornflower blue" :underline t)))))

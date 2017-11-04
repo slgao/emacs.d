@@ -26,7 +26,7 @@
 (global-set-key (kbd "C-x C-;") 'toggle-comment-on-line)
 
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
-(global-set-key (kbd "C-c c") 'xah-copy-line-or-region)
+(global-set-key (kbd "C-x c") 'xah-copy-line-or-region)
 
 ;; kbd ace-window
 (global-set-key (kbd "C-x o") 'ace-window)
@@ -67,5 +67,14 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; kbd for toggle window split
+(global-set-key (kbd "C-x |") 'toggle-window-split)
+
+;; kbd for select current line
+(global-set-key (kbd "C-c s") 'select-current-line)
+
+;; yasnippet keybinding
+(define-key yas-minor-mode-map (kbd "<C-tab>")     'yas-ido-expand)
 
 (provide 'init-keybindings)

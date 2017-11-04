@@ -201,6 +201,64 @@ Position the cursor at its beginning, according to the current mode."
 
 #+END_SRC
 
+** Toggle window split https://www.emacswiki.org/emacs/ToggleWindowSplit
+#+BEGIN_SRC emacs-lisp
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+         (next-win-buffer (window-buffer (next-window)))
+         (this-win-edges (window-edges (selected-window)))
+         (next-win-edges (window-edges (next-window)))
+         (this-win-2nd (not (and (<= (car this-win-edges)
+                     (car next-win-edges))
+                     (<= (cadr this-win-edges)
+                     (cadr next-win-edges)))))
+         (splitter
+          (if (= (car this-win-edges)
+             (car (window-edges (next-window))))
+          'split-window-horizontally
+        'split-window-vertically)))
+    (delete-other-windows)
+    (let ((first-win (selected-window)))
+      (funcall splitter)
+      (if this-win-2nd (other-window 1))
+      (set-window-buffer (selected-window) this-win-buffer)
+      (set-window-buffer (next-window) next-win-buffer)
+      (select-window first-win)
+      (if this-win-2nd (other-window 1))))))
+#+END_SRC
+** Aspell check cofiguration
+#+BEGIN_SRC emacs-lisp
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+#+END_SRC
+** Yasnippet configuration from https://www.emacswiki.org/emacs/Yasnippet
+   #+BEGIN_SRC emacs-lisp
+    ;; Completing point by some yasnippet key
+    (defun yas-ido-expand ()
+      "Lets you select (and expand) a yasnippet key"
+      (interactive)
+	(let ((original-point (point)))
+	  (while (and
+		  (not (= (point) (point-min) ))
+		  (not
+		   (string-match "[[:space:]\n]" (char-to-string (char-before)))))
+	    (backward-word 1))
+	(let* ((init-word (point))
+	       (word (buffer-substring init-word original-point))
+	       (list (yas-active-keys)))
+	  (goto-char original-point)
+	  (let ((key (remove-if-not
+		      (lambda (s) (string-match (concat "^" word) s)) list)))
+	    (if (= (length key) 1)
+		(setq key (pop key))
+	      (setq key (ido-completing-read "key: " list nil nil word)))
+	    (delete-char (- init-word original-point))
+	    (insert key)
+            (yas-expand)))))
+   #+END_SRC
+package helm-c-yasnippet can also be considered, which can select template from helm
 ** provide package
    #+BEGIN_SRC emacs-lisp
      (provide 'init-utils)

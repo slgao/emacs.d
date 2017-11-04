@@ -142,4 +142,18 @@
 
 (add-hook 'flycheck-mode-hook #'flycheck-virtualenv-setup)
 
+;; select current line command
+(transient-mark-mode 1)
+
+(defun select-current-line ()
+  "Select the current line"
+  (interactive)
+  (end-of-line) ; move to end of line
+  (set-mark (line-beginning-position)))
+
+;; show trailing white space
+(require 'whitespace)
+(setq whitespace-style
+      '(face trailing))
+
 (provide 'init-better-defaults)

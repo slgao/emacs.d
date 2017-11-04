@@ -7,6 +7,9 @@
 (defvar shulin/packages '(
                           company
                           monokai-theme
+			  zenburn-theme
+			  tangotango-theme
+			  flatland-theme
 			  hungry-delete
 			  exec-path-from-shell
 			  swiper
@@ -32,6 +35,8 @@
 			  iedit
 			  multiple-cursors
 			  ein
+			  org-gcal
+			  sphinx-doc
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -48,6 +53,12 @@
 (setq package-selected-packages shulin/packages)
 
 ;; config company-mode, reset company-active-map
+;; in python mode, company mode and jedi mode completion may
+;; be shown at the same time. Confliction may occur when it comes to
+;; chosing the right completion. #TODO: disable company mode only in
+;; python mode, more specifically in source code region. and set local
+;; key select next and previous jedi mode completion as "C-n" and "C-p"
+
 (global-company-mode t)
 (eval-after-load 'company
   '(progn
@@ -91,11 +102,10 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
-;; config flycheck -- maybe slow
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode)
-  (setq flycheck-highlighting-mode 'lines))
+;; config flycheck -- comment to disable flycheck, slow in python mode
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 ;; config pep8
 (require 'py-autopep8)
@@ -199,6 +209,44 @@
 ;; enable smartrep
 (setq ein:use-smartrep t)
 
+;; try company-anaconda
+;; I commented this out because I also use jedi mode to complete the code
+;; (add-hook 'python-mode-hook 'anaconda-mode)
+;; (add-hook 'python-mode-hook
+;; 	  (lambda ()
+;; 	  (set(make-local-variable 'company-backends) '(company-anaconda company-dabbrev))))
+
+;; ;; commented maybe because of the ssl aut problem
+;; (require 'org-gcal)
+;; (setq org-gcal-client-id "224061746080-mvhsjeafepmuul58osdmf6i5dk9ul29p.apps.googleusercontent.com"
+;;       org-gcal-client-secret "JSJ-ehfmbdR_OrIFfizYAGav"
+;;       org-gcal-file-alist '(("sleangao@gmail.com" .  "~/.emacs.d/org-gcal/gcal.org")))
+
+;; ;; sync org file and gcal
+;; (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+;; add cygwin path
+(add-to-list 'exec-path "c:/cygwin64/bin/")
+
+;; py-autopep8 config
+(require 'py-autopep8)
+;; enable formatting when python file is saved
+;; (add-hook 'python-mode-hook 'py-autopep8-enable-on-save) ; commented out for efficiency
+(setq py-autopep8-options '("--max-line-length=100"))
+
+;; yasnippet minor mode config
+(require 'yasnippet)
+(yas-reload-all)
+(add-hook 'prog-mode-hook #'yas-minor-mode)
+
+;; sphinx-doc mode config
+(add-hook 'python-mode-hook (lambda ()
+			      (require 'sphinx-doc)
+			      (sphinx-doc-mode t)))
 
 (provide 'init-packages)
 

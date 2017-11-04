@@ -1,4 +1,3 @@
-
 (if (fboundp 'with-eval-after-load)
     (defalias 'after-load 'with-eval-after-load)
   (defmacro after-load (feature &rest body)
@@ -185,5 +184,56 @@ Position the cursor at its beginning, according to the current mode."
   (interactive)
   (move-end-of-line nil)
   (newline-and-indent))
+
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+         (next-win-buffer (window-buffer (next-window)))
+         (this-win-edges (window-edges (selected-window)))
+         (next-win-edges (window-edges (next-window)))
+         (this-win-2nd (not (and (<= (car this-win-edges)
+                     (car next-win-edges))
+                     (<= (cadr this-win-edges)
+                     (cadr next-win-edges)))))
+         (splitter
+          (if (= (car this-win-edges)
+             (car (window-edges (next-window))))
+          'split-window-horizontally
+        'split-window-vertically)))
+    (delete-other-windows)
+    (let ((first-win (selected-window)))
+      (funcall splitter)
+      (if this-win-2nd (other-window 1))
+      (set-window-buffer (selected-window) this-win-buffer)
+      (set-window-buffer (next-window) next-win-buffer)
+      (select-window first-win)
+      (if this-win-2nd (other-window 1))))))
+
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; Completing point by some yasnippet key
+(defun yas-ido-expand ()
+  "Lets you select (and expand) a yasnippet key"
+  (interactive)
+    (let ((original-point (point)))
+      (while (and
+	      (not (= (point) (point-min) ))
+	      (not
+	       (string-match "[[:space:]\n]" (char-to-string (char-before)))))
+	(backward-word 1))
+    (let* ((init-word (point))
+	   (word (buffer-substring init-word original-point))
+	   (list (yas-active-keys)))
+      (goto-char original-point)
+      (let ((key (remove-if-not
+		  (lambda (s) (string-match (concat "^" word) s)) list)))
+	(if (= (length key) 1)
+	    (setq key (pop key))
+	  (setq key (ido-completing-read "key: " list nil nil word)))
+	(delete-char (- init-word original-point))
+	(insert key)
+        (yas-expand)))))
 
 (provide 'init-utils)
