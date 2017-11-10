@@ -201,6 +201,7 @@
 (require 'all-the-icons)
 ;; the fonts in all-the-icons packages should be installed if icons neo-theme is used
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+(setq inhibit-compacting-font-caches t)
 
 ;; config js2-refactor
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
