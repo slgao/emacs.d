@@ -37,6 +37,12 @@
 			  ein
 			  org-gcal
 			  sphinx-doc
+			  clang-format
+			  helm
+			  helm-gtags
+			  company-jedi
+			  irony
+			  cmake-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -101,6 +107,14 @@
 (add-to-list 'ac-sources 'ac-source-jedi-direct)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
+;; set jedi as company backends.
+;; if elpy-rpc-backend is set to jedi, company-backends may be also
+;; be set accordingly.
+(defun company-backends/python-mode-hook ()
+  (add-to-list 'company-backends 'company-jedi))
+(add-hook 'python-mode-hook 'company-backends/python-mode-hook)
+;; set elpy backend to jedi
+(setq elpy-rpc-backend "jedi")
 
 ;; config flycheck -- comment to disable flycheck, slow in python mode
 ;; (when (require 'flycheck nil t)
@@ -230,7 +244,8 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 ;; add cygwin path
-(add-to-list 'exec-path "c:/cygwin64/bin/")
+(if (eq system-type 'windows-nt)
+    (add-to-list 'exec-path "c:/cygwin64/bin/"))
 
 ;; py-autopep8 config
 (require 'py-autopep8)
@@ -248,5 +263,23 @@
 			      (require 'sphinx-doc)
 			      (sphinx-doc-mode t)))
 
-(provide 'init-packages)
+;; clang-format config
+(require 'clang-format)
+(global-set-key (kbd "C-c i") 'clang-format-region)
+(global-set-key (kbd "C-c u") 'clang-format-buffer)
+(setq clang-format-style-option "llvm")
 
+;; helm config
+(require 'helm-config)
+
+;; config irony mode
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; config cmake-mode
+(require 'cmake-mode)
+
+(provide 'init-packages)

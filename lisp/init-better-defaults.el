@@ -119,6 +119,10 @@
 	     (getenv "PATH")))
   )
 
+;; set clang path on MS Windows system
+(if (eq system-type 'windows-nt)
+    (setq company-clang-executable "C:\\Program Files\\LLVM\\bin\\clang.exe"))
+
 ;; add highlight for pyx files
 (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode))
 
@@ -155,5 +159,34 @@
 (require 'whitespace)
 (setq whitespace-style
       '(face trailing))
+
+;; config helm-gtags
+(setq helm-gtags-ignore-case t
+      helm-gtags-auto-update t
+      helm-gtags-use-input-at-cursor t
+      helm-gtags-pulse-at-cursor t
+      helm-gtags-prefix-key "\C-cg"
+      helm-gtags-suggested-key-mapping t)
+
+;; Enable helm-gtags-mode in Dired so you can jump to any tag
+;; when navigate project tree with Dired
+(add-hook 'dired-mode-hook 'helm-gtags-mode)
+
+;; Enable helm-gtags-mode in Eshell for the same reason as above
+(add-hook 'eshell-mode-hook 'helm-gtags-mode)
+
+;; Enable helm-gtags-mode in languages that GNU Global supports
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
+(add-hook 'java-mode-hook 'helm-gtags-mode)
+(add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+;; Windows performance tweaks for irony
+;;
+(when (boundp 'w32-pipe-read-delay)
+  (setq w32-pipe-read-delay 0))
+;; Set the buffer size to 64K on Windows (from the original 4K)
+(when (boundp 'w32-pipe-buffer-size)
+  (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
 
 (provide 'init-better-defaults)

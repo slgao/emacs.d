@@ -11,7 +11,7 @@
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 ;; avy fast goto word
-(global-set-key (kbd "C-c g") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "C-:") 'avy-goto-word-or-subword-1)
 
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
@@ -76,5 +76,23 @@
 
 ;; yasnippet keybinding
 (define-key yas-minor-mode-map (kbd "<C-tab>")     'yas-ido-expand)
+
+;; key bindings for helm-gtags
+(with-eval-after-load 'helm-gtags
+  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
+
+;; change jedi goto-definition keybindings
+;; change elpy backend to jedi does not use jedi:goto-definition
+(eval-after-load 'jedi
+  '(progn
+     (define-key jedi-mode-map (kbd "C-c .") nil)
+     (define-key jedi-mode-map (kbd "M-.") 'jedi:goto-definition)     
+     (define-key jedi-mode-map (kbd "C-c ,") nil)
+     (define-key jedi-mode-map (kbd "M-,") 'jedi:goto-definition-pop-marker)))
 
 (provide 'init-keybindings)
