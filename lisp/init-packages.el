@@ -46,6 +46,8 @@
 			  cython-mode
 			  flycheck-cython
 			  flycheck-irony
+			  company-irony
+			  company-irony-c-headers
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -118,6 +120,22 @@
 (add-hook 'python-mode-hook 'company-backends/python-mode-hook)
 ;; set elpy backend to jedi
 (setq elpy-rpc-backend "jedi")
+
+;; config irony mode
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; set company backend to company irony
+(defun company-backends/c++-mode-hook()
+  (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+(add-hook 'irony-mode-hook 'company-backends/c++-mode-hook)
+
+;; start flycheck-irony when irony mode is activated
+(add-hook 'irony-mode-hook 'flycheck-mode)
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ;; config flycheck -- comment to disable flycheck, slow in python mode
 ;; (when (require 'flycheck nil t)
@@ -276,13 +294,6 @@
 
 ;; helm config
 (require 'helm-config)
-
-;; config irony mode
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
-
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 ;; config cmake-mode
 (require 'cmake-mode)
