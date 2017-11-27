@@ -48,6 +48,7 @@
 			  flycheck-irony
 			  company-irony
 			  company-irony-c-headers
+			  use-package
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -118,8 +119,8 @@
 (defun company-backends/python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi))
 (add-hook 'python-mode-hook 'company-backends/python-mode-hook)
-;; set elpy backend to jedi
-(setq elpy-rpc-backend "jedi")
+;; set elpy backend to jedi, comment it out since the newer version of elpy works good.
+;; (setq elpy-rpc-backend "jedi")
 
 ;; config irony mode
 (add-hook 'c++-mode-hook 'irony-mode)

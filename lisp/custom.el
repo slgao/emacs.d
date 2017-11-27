@@ -34,7 +34,7 @@
     ("~/.emacs.d/org/TODO.org" "~/.emacs.d/org-gcal/gcal.org")))
  '(package-selected-packages
    (quote
-    (company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
+    (flymake-python-pyflakes company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)

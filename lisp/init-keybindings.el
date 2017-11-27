@@ -95,4 +95,10 @@
      (define-key jedi-mode-map (kbd "C-c ,") nil)
      (define-key jedi-mode-map (kbd "M-,") 'jedi:goto-definition-pop-marker)))
 
+;; set flymake kbd to show the error message when go to the error
+;; it does not show the error message when the point is at the error somehow.
+;; use bink-key* macro in use-package from melpa to overwrite kbd.
+(bind-key* "C-c C-n" 'flymake-goto-next-error)
+(bind-key* "C-c C-p" 'flymake-goto-prev-error)
+
 (provide 'init-keybindings)
