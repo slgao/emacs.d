@@ -1,0 +1,154 @@
+-*- mode: compilation; default-directory: "c:/Users/SGao0001/AppData/Local/Temp/build-irony-server-1.2.0/" -*-
+Compilation started at Sun Nov 26 23:43:11
+
+"cmake"  -G"Visual Studio 14 2015 Win64" -T"LLVM-vs2014" "-DCMAKE_INSTALL_PREFIX=c:/Users/SGao0001/AppData/Roaming/.emacs.d/irony/" "c:/Users/SGao0001/AppData/Roaming/.emacs.d/elpa/irony-20171110.1151/server" && "cmake" --build . --use-stderr --config Release --target install
+-- Selecting Windows SDK version 10.0.10586.0 to target Windows 10.0.15063.
+-- The C compiler identification is Clang 5.0.0
+-- The CXX compiler identification is Clang 5.0.0
+-- Check for working C compiler: C:/Program Files/LLVM/msbuild-bin/cl.exe
+-- Check for working C compiler: C:/Program Files/LLVM/msbuild-bin/cl.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: C:/Program Files/LLVM/msbuild-bin/cl.exe
+-- Check for working CXX compiler: C:/Program Files/LLVM/msbuild-bin/cl.exe -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test HAS_STDCXX11
+-- Performing Test HAS_STDCXX11 - Success
+-- Performing Test HAS_CXX11_STDLIB
+-- Performing Test HAS_CXX11_STDLIB - Success
+-- C++11 compiler option(s): -std=c++11
+-- Found LibClang: C:/Program Files/LLVM/lib/libclang.lib  
+-- Detecting Clang resource directory
+-- Detecting libclang builtin headers directory -- success
+-- Irony package version is '1.2.0'
+-- Found emacs: C:/Program Files/emacs-26.0.90-x86_64-with-deps/bin/emacs.exe
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/SGao0001/AppData/Local/Temp/build-irony-server-1.2.0
+Microsoft (R) Build Engine version 14.0.25420.1
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Build started 26.11.2017 23:43:30.
+Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" on node 1 (default targets).
+Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (1) is building "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ZERO_CHECK.vcxproj" (2) on node 1 (default targets).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ZERO_CHECK.vcxproj]
+InitializeBuildStatus:
+  Creating "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+CustomBuild:
+  All outputs are up-to-date.
+FinalizeBuildStatus:
+  Deleting file "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild".
+  Touching "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\ZERO_CHECK.lastbuildstate".
+Done Building Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ZERO_CHECK.vcxproj" (default targets).
+Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (1) is building "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj" (3) on node 1 (default targets).
+Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj" (3) is building "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj" (4) on node 1 (default targets).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+InitializeBuildStatus:
+  Creating "irony-server.dir\Release\irony-server.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+CustomBuild:
+  All outputs are up-to-date.
+ClCompile:
+  All outputs are up-to-date.
+  C:\Program Files\LLVM\msbuild-bin\CL.exe /c /I"C:\Program Files\LLVM\include" /I"C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src" /nologo /Wall /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D _HAS_EXCEPTIONS=0 /D NDEBUG /D "CLANG_RESOURCE_DIR=\"C:/Program Files/LLVM/lib/clang/5.0.0\"" /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"irony-server.dir\Release\\" /Fd"irony-server.dir\Release\vc140.pdb" /Gd /TP /errorReport:queue -m64 -fmsc-version=1900  /EHs-c- -Wextra "C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\support\CommandLineParser.cpp" "C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\support\TemporaryFile.cpp" "C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\Command.cpp" "C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\Irony.cpp" "C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\TUManager.cpp"
+clang-cl.exe : warning : argument unused during compilation: '/Gm-' [-Wunused-command-line-argument] [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\support\TemporaryFile.cpp(22,32): warning : 'getenv' is deprecated: This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations] [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+      if (const char *dir = std::getenv(envVar))
+                                 ^
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10586.0\ucrt\stdlib.h(1184,20):  note: 'getenv' has been explicitly marked deprecated here
+      _Check_return_ _CRT_INSECURE_DEPRECATE(_dupenv_s) 
+                     ^
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h(269,55):  note: expanded from macro '_CRT_INSECURE_DEPRECATE'
+          #define _CRT_INSECURE_DEPRECATE(_Replacement) _CRT_DEPRECATE_TEXT(    \
+                                                        ^
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h(259,47):  note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+                                                ^
+  1 warning generated.
+  All outputs are up-to-date.
+  C:\Program Files\LLVM\msbuild-bin\CL.exe /c /I"C:\Program Files\LLVM\include" /I"C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src" /nologo /Wall /WX- /O2 /Ob2 /D "IRONY_PACKAGE_VERSION=\"1.2.0\"" /D WIN32 /D _WINDOWS /D _HAS_EXCEPTIONS=0 /D NDEBUG /D "CLANG_RESOURCE_DIR=\"C:/Program Files/LLVM/lib/clang/5.0.0\"" /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"irony-server.dir\Release\\" /Fd"irony-server.dir\Release\vc140.pdb" /Gd /TP /errorReport:queue -m64 -fmsc-version=1900  /EHs-c- -Wextra "C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\main.cpp"
+clang-cl.exe : warning : argument unused during compilation: '/Gm-' [-Wunused-command-line-argument] [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\bin\Release\irony-server.exe" /INCREMENTAL:NO /NOLOGO "C:\Program Files\LLVM\lib\libclang.lib" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:/Users/SGao0001/AppData/Local/Temp/build-irony-server-1.2.0/bin/Release/irony-server.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/SGao0001/AppData/Local/Temp/build-irony-server-1.2.0/lib/Release/irony-server.lib" /MACHINE:X64  /machine:x64 "irony-server.dir\Release\CommandLineParser.obj"
+  "irony-server.dir\Release\TemporaryFile.obj"
+  "irony-server.dir\Release\Command.obj"
+  "irony-server.dir\Release\Irony.obj"
+  "irony-server.dir\Release\TUManager.obj"
+  "irony-server.dir\Release\main.obj"
+  irony-server.vcxproj -> C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\bin\Release\irony-server.exe
+FinalizeBuildStatus:
+  Deleting file "irony-server.dir\Release\irony-server.tlog\unsuccessfulbuild".
+  Touching "irony-server.dir\Release\irony-server.tlog\irony-server.lastbuildstate".
+Done Building Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj" (default targets).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj]
+InitializeBuildStatus:
+  Creating "x64\Release\ALL_BUILD\ALL_BUILD.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+CustomBuild:
+  All outputs are up-to-date.
+FinalizeBuildStatus:
+  Deleting file "x64\Release\ALL_BUILD\ALL_BUILD.tlog\unsuccessfulbuild".
+  Touching "x64\Release\ALL_BUILD\ALL_BUILD.tlog\ALL_BUILD.lastbuildstate".
+Done Building Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj" (default targets).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj]
+InitializeBuildStatus:
+  Creating "x64\Release\INSTALL\INSTALL.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+PostBuildEvent:
+  setlocal
+  "C:\Program Files\CMake\bin\cmake.exe" -DBUILD_TYPE=Release -P cmake_install.cmake
+  if %errorlevel% neq 0 goto :cmEnd
+  :cmEnd
+  endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+  :cmErrorLevel
+  exit /b %1
+  :cmDone
+  if %errorlevel% neq 0 goto :VCEnd
+  :VCEnd
+  -- Install configuration: "Release"
+  -- Installing: C:/Users/SGao0001/AppData/Roaming/.emacs.d/irony/bin/irony-server.exe
+FinalizeBuildStatus:
+  Deleting file "x64\Release\INSTALL\INSTALL.tlog\unsuccessfulbuild".
+  Touching "x64\Release\INSTALL\INSTALL.tlog\INSTALL.lastbuildstate".
+Done Building Project "C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (default targets).
+
+Build succeeded.
+
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (default target) (1) ->
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ZERO_CHECK.vcxproj" (default target) (2) ->
+(PrepareForBuild target) -> 
+  C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ZERO_CHECK.vcxproj]
+
+
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (default target) (1) ->
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj" (default target) (3) ->
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj" (default target) (4) ->
+  C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+
+
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (default target) (1) ->
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj" (default target) (3) ->
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj" (default target) (4) ->
+(ClCompile target) -> 
+  clang-cl.exe : warning : argument unused during compilation: '/Gm-' [-Wunused-command-line-argument] [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+  C:\Users\SGao0001\AppData\Roaming\.emacs.d\elpa\irony-20171110.1151\server\src\support\TemporaryFile.cpp(22,32): warning : 'getenv' is deprecated: This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations] [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+  clang-cl.exe : warning : argument unused during compilation: '/Gm-' [-Wunused-command-line-argument] [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\src\irony-server.vcxproj]
+
+
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (default target) (1) ->
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj" (default target) (3) ->
+(PrepareForBuild target) -> 
+  C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\ALL_BUILD.vcxproj]
+
+
+"C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj" (default target) (1) ->
+  C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build. [C:\Users\SGao0001\AppData\Local\Temp\build-irony-server-1.2.0\install.vcxproj]
+
+    7 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:07.38
+
+Compilation finished at Sun Nov 26 23:43:38

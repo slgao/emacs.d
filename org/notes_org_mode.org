@@ -1,0 +1,40 @@
+* chapter 2. Document structure
+  
+** Construct Sparse trees 
+*** C-c /  ---> C-c / r prompts for a regexp.
+    
+** Plain lists
+*** Lord of the Rings
+    My favorite scenes are (in this order)
+        1. The attack of the Rohirrim
+	2. Eowyn's fight with the witch king
+	   1. this was already my favorite scene in the book
+	   2. I really like Miranda Otto.
+	   3. [ ] M-S-RET -- Insert new item with checkbox when cursor is at a blank line,
+	      otherwise a TODO item will be created.
+	Important actors in this film are:
+	- Elijah Wood :: He plays Frodoc
+	- Sean Astin :: He plays Sam, Frodo's friend.
+	- [X]  :: toggle checkbox with C-c C-c.
+	- unordered list can not recognize its headline level.
+	- cycle the entire list level through different itemize bullets + - * ..
+	  
+** Footnotes
+   The org homepage [fn:1]now is better. -- C-c C-x f create footnote
+[fn:1] http://orgmode.org
+
+
+* chapter 3. Tables
+| Name   | Age | Gender | Email       |      Tel |
+|--------+-----+--------+-------------+----------|
+| Andrew |  24 | Male   | xx@gmail.om | 017654.. |
+
+C-c | Convert the region to a table
+If no active region, this creates an empty org table.
+It's easier to type |Name|Age|Phone C-c RET
+
+
+C-c C-c --> Re-align the table without moving the cursor.
+TAB --> Re-align, move to next field.
+S-TAB --> Re-align, move to previours field
+RET --> Re-align, move down to next row.

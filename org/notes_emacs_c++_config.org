@@ -1,0 +1,12 @@
+* Install irony-mode on windows.
+** Install cmake, llvm precompiled for windows.
+*** clang executable, liclang.lib should be included in the system environment.
+** Build error when run the default cmake command.
+*** Problem --> clang resource directory was always not found
+    Download the clang source code from the LLVM official website with the same release version.
+    Include manually the directory using flag "-DLIBCLANG_INCLUDE_DIR=C:\Program Files\LLVM\cfe-5.0.0.src\include", problem still not resolved.
+*** Resolve: add -G"Visual Studio 14 2015 Win64" -T"LLVM-vs2014" config after cmake command results in the following:
+    "cmake"  -G"Visual Studio 14 2015 Win64" -T"LLVM-vs2014" "-DCMAKE_INSTALL_PREFIX=c:/Users/SGao0001/AppData/Roaming/.emacs.d/irony/" "c:/Users/SGao0001/AppData/Roaming/.emacs.d/elpa/irony-20171110.1151/server" && "cmake" --build . --use-stderr --config Release --target install
+    We need to use the LLVM Clang toolset for windows and compile the package target to x64 machine. --> Problem resolved
+    see file:c:/Users/SGao0001/AppData/Roaming/.emacs.d/org/irony-server-build.log
+** Test result is not good as expected.
