@@ -1,0 +1,1 @@
+add_library(my_inc Myadd.cpp)

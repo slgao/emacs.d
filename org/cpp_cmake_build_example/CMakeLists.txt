@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.10.0)
+project(PascalTriangle)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/my_inc)
+add_subdirectory(my_inc)
+set(SOURCES pascal_triangle.cpp helper.cpp)
+add_executable (${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} my_inc)

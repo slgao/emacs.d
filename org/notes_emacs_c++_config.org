@@ -6,7 +6,34 @@
     Download the clang source code from the LLVM official website with the same release version.
     Include manually the directory using flag "-DLIBCLANG_INCLUDE_DIR=C:\Program Files\LLVM\cfe-5.0.0.src\include", problem still not resolved.
 *** Resolve: add -G"Visual Studio 14 2015 Win64" -T"LLVM-vs2014" config after cmake command results in the following:
-    "cmake"  -G"Visual Studio 14 2015 Win64" -T"LLVM-vs2014" "-DCMAKE_INSTALL_PREFIX=c:/Users/SGao0001/AppData/Roaming/.emacs.d/irony/" "c:/Users/SGao0001/AppData/Roaming/.emacs.d/elpa/irony-20171110.1151/server" && "cmake" --build . --use-stderr --config Release --target install
+    "cmake"  -G"Visual Studio 14 2015 Win64" -T"LLVM-vs2014" "-DCMAKE_INSTALL_PREFIX=c:/Users/SGao0001/AppData/Roaming/.emacs.d/irony/" "c:/Users/SGao0001/AppData/Roaming/.emacs.d/elpa/irony-20171110.1151/server" && "cmakeba" --build . --use-stderr --config Release --target install
     We need to use the LLVM Clang toolset for windows and compile the package target to x64 machine. --> Problem resolved
     see file:c:/Users/SGao0001/AppData/Roaming/.emacs.d/org/irony-server-build.log
-** Test result is not good as expected.
+*** irony server exe file will be generated under .emacs.d/irony folder.
+** Test result is not good as expected, better results see below -->
+** It shows a good result when company-irony is installed and used.
+*** Turn on irony-mode for c/c++/objective-c mode, after that company-irony and flycheck-irony will be activated.
+* Build an cpp example project using cmake with clang on windows.
+** The files and directories in main project directory
+   CMakeLists.txt  build/  helper.cpp  helper.h  my_inc/  pascal_triangle.cpp .clang_complete
+*** In my_inc/
+**** CMakeLists.txt  Myadd.cpp  Myadd.h
+***** in CMakeLists.txt file:
+      add_library(my_inc Myadd.cpp)
+*** In build/
+**** make.cmd:
+     cmake -G "Visual Studio 14 2015 Win64" -T "LLVM-vs2014"  ..
+     cmake --build ./ --config Release
+**** run the make.cmd file, the project will be build in the build folder.
+*** In CMakeLists.txt:  
+    --> see file:c:/Users/SGao0001/AppData/Roaming/.emacs.d/org/cpp_cmake_build_example/CMakeLists.txt
+    cmake_minimum_required(VERSION 3.10.0)
+    project(PascalTriangle)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+    include_directories(${PROJECT_SOURCE_DIR}/my_inc)
+    add_subdirectory(my_inc)
+    set(SOURCES pascal_triangle.cpp helper.cpp)
+    add_executable (${PROJECT_NAME} ${SOURCES})
+    target_link_libraries(${PROJECT_NAME} my_inc)
+*** In .clang_complete --> make irony know the src subdirectory.
+    -I./my_inc
