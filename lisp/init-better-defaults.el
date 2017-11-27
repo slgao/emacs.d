@@ -123,9 +123,7 @@
 (if (eq system-type 'windows-nt)
     (setq company-clang-executable "C:\\Program Files\\LLVM\\bin\\clang.exe"))
 
-;; add highlight for pyx files
-(add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode))
-
+;; python-mode-hook hide and show code block
 (add-hook 'python-mode-hook
 	  (	  lambda()
 	    (local-set-key (kbd "C-c <right>") 'hs-show-block)
@@ -188,5 +186,9 @@
 ;; Set the buffer size to 64K on Windows (from the original 4K)
 (when (boundp 'w32-pipe-buffer-size)
   (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
+
+;; set default python env as py36, python 3.6 needs to be named as py36
+(require 'pyvenv)
+(pyvenv-workon "py36")
 
 (provide 'init-better-defaults)

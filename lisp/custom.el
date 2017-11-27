@@ -39,6 +39,7 @@
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
  '(tool-bar-mode nil)
+ '(tramp-syntax (quote default) nil (tramp))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote

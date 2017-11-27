@@ -43,6 +43,9 @@
 			  company-jedi
 			  irony
 			  cmake-mode
+			  cython-mode
+			  flycheck-cython
+			  flycheck-irony
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -120,6 +123,7 @@
 ;; (when (require 'flycheck nil t)
 ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
 ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
 
 ;; config pep8
 (require 'py-autopep8)
@@ -282,5 +286,13 @@
 
 ;; config cmake-mode
 (require 'cmake-mode)
+
+;; use flycheck for cython-mode
+(require 'flycheck-cython)
+(add-hook 'cython-mode-hook 'flycheck-mode)
+
+;; flycheck-irony config
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 (provide 'init-packages)
