@@ -71,4 +71,8 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight bold :height 98 :width normal :foundry "outline" :family "Consolas"))))
  '(bold ((t (:weight bold))))
+ '(flymake-errline ((t (:strike-through nil :underline "#F92672"))))
+ '(flymake-warnline ((t (:underline "#E6DB74"))))
+ '(flyspell-duplicate ((t (:underline (:color "light yellow" :style wave)))))
+ '(flyspell-incorrect ((t (:underline (:color "orange red" :style wave)))))
  '(iedit-occurrence ((t (:inherit region :background "cornflower blue" :underline t)))))

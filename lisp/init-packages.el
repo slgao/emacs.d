@@ -49,6 +49,7 @@
 			  company-irony
 			  company-irony-c-headers
 			  use-package
+			  yaml-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -100,13 +101,15 @@
 
 ;; config python evn
 ;; use function M-x pyvenv-activate to select python environment manually
-(setenv "WORKON_HOME" "C:/Anaconda3/envs")
+(setenv "WORKON_HOME" "C:/Users/SGao0001/AppData/Local/Continuum/anaconda3/envs")
 (pyvenv-mode 1)
 
 ;; config elpy
 
 (elpy-enable)
-(elpy-use-ipython)
+;;(elpy-use-ipython)
+(setq python-shell-interpreter "ipython"
+      python-shell-interpreter-args "-i --simple-prompt")
 
 ;; config jedi
 (require 'jedi)
@@ -148,11 +151,9 @@
 (require 'py-autopep8)
 					;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-
 ;; config popwin
 (require 'popwin)
 (popwin-mode t)
-
 
 ;;;;;;;;;;;;;;
 ;;emmet-mode
@@ -162,7 +163,6 @@
 (add-hook 'html-mode-hook 'emmet-mode)
 (add-hook 'web-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook  'emmet-mode)
-
 
 ;;;;;;;;;;;;;;
 ;;web-mode
@@ -265,7 +265,9 @@
 ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
 
 (require 'org-bullets)
+(setq org-bullets-face-name (quote org-bullet-face))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
 
 ;; add cygwin path
 (if (eq system-type 'windows-nt)
@@ -306,5 +308,11 @@
 ;; flycheck-irony config
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+;; config yaml-mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+(require 'yapfify)
 
 (provide 'init-packages)

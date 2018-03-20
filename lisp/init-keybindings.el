@@ -98,7 +98,8 @@
 ;; set flymake kbd to show the error message when go to the error
 ;; it does not show the error message when the point is at the error somehow.
 ;; use bink-key* macro in use-package from melpa to overwrite kbd.
-(bind-key* "C-c C-n" 'flymake-goto-next-error)
-(bind-key* "C-c C-p" 'flymake-goto-prev-error)
+;; for emacs -v=26 use the kbd, -v=25 show error use elpy-flymake-next-error
+;; (bind-key* "C-c C-n" 'flymake-goto-next-error)
+;; (bind-key* "C-c C-p" 'flymake-goto-prev-error)
 
 (provide 'init-keybindings)
