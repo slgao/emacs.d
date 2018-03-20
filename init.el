@@ -8,7 +8,7 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
-
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (require 'org-install)
 (require 'ob-tangle)
 (org-babel-load-file (expand-file-name "shulins_emacs_config.org" user-emacs-directory))
