@@ -34,10 +34,11 @@
     ("~/.emacs.d/org/TODO.org" "~/.emacs.d/org-gcal/gcal.org")))
  '(package-selected-packages
    (quote
-    (flymake-python-pyflakes company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
+    (timesheet flymake-python-pyflakes company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete ivy counsel swiper monokai-theme company)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
+ '(timesheet-invoice-number 101)
  '(tool-bar-mode nil)
  '(tramp-syntax (quote default) nil (tramp))
  '(vc-annotate-background nil)
@@ -69,7 +70,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Monaco"))))
+ '(default ((t (:inherit nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "raster" :family "Consolas"))))
  '(ac-candidate-face ((t (:background "#3C3D37" :foreground "#66D9EF"))))
  '(bold ((t (:weight bold))))
  '(flymake-errline ((t (:strike-through nil :underline "#F92672"))))

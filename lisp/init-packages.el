@@ -240,7 +240,7 @@
 (require 'multiple-cursors)
 
 (require 'ein)
-(require 'ein-loaddefs)
+;; (require 'ein-loaddefs)
 (require 'ein-notebook)
 (require 'ein-subpackages)
 ;; enable auto-complete for ein
