@@ -50,6 +50,8 @@
 			  company-irony-c-headers
 			  use-package
 			  yaml-mode
+			  yasnippet
+			  yasnippet-snippets
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -240,7 +242,7 @@
 (require 'multiple-cursors)
 
 (require 'ein)
-(require 'ein-loaddefs)
+;; (require 'ein-loaddefs)
 (require 'ein-notebook)
 (require 'ein-subpackages)
 ;; enable auto-complete for ein
