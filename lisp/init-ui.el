@@ -6,7 +6,8 @@
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
 (global-hl-line-mode t)
 (setq-default cursor-type 'bar)
-(load-theme 'monokai t)
+;; (load-theme 'monokai t)
+(load-theme 'gruvbox t)
 ;; config split window, split window horizontally by default
 (setq split-height-threshold nil)
 (setq split-width-threshold 0)

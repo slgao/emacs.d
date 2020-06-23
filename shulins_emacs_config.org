@@ -8,7 +8,7 @@
   (add-to-list 'load-path "~/.emacs.d/site-lisp")
   ;; also include subdirectories
   (progn (cd "~/.emacs.d/site-lisp")
-         (normal-top-level-add-subdirs-to-load-path))
+	 (normal-top-level-add-subdirs-to-load-path))
 
   (defun open-my-init-file()
     (interactive)
@@ -32,5 +32,6 @@
   (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
 
   (load-file custom-file)
+
 #+END_SRC
 

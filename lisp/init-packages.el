@@ -52,6 +52,8 @@
 			  yaml-mode
 			  yasnippet
 			  yasnippet-snippets
+			  gruvbox-theme
+			  htmlize
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -128,7 +130,7 @@
   (add-to-list 'company-backends 'company-jedi))
 (add-hook 'python-mode-hook 'company-backends/python-mode-hook)
 ;; set elpy backend to jedi, comment it out since the newer version of elpy works good.
-;; (setq elpy-rpc-backend "jedi")
+(setq elpy-rpc-backend "jedi")
 
 ;; config irony mode
 (add-hook 'c++-mode-hook 'irony-mode)
@@ -151,6 +153,17 @@
 ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
 ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+
+;; global flycheck mode.
+;; (global-flycheck-mode)
+
+;; set checker variable
+;; (custom-set-variables
+;;  '(flycheck-python-flake8-executable "python")
+;;  ;; '(flycheck-python-pycompile-executable "python")
+;;  ;; '(flycheck-python-pylint-executable "python")
+;; )
+
 
 ;; config pep8
 (require 'py-autopep8)
@@ -244,7 +257,6 @@
 (require 'ein)
 ;; (require 'ein-loaddefs)
 (require 'ein-notebook)
-(require 'ein-subpackages)
 ;; enable auto-complete for ein
 (setq ein:use-auto-complete t)
 ;; Or, to enable "superpack" (a little bit hacky improvements):
@@ -319,5 +331,9 @@
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 (require 'yapfify)
+
+; enaml config
+(require 'enaml)
+(setq auto-mode-alist (cons '("\\.enaml$" . enaml-mode) auto-mode-alist))
 
 (provide 'init-packages)
