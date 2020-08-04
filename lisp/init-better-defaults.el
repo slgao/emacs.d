@@ -140,7 +140,7 @@
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
-        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 (add-hook 'flycheck-mode-hook #'flycheck-virtualenv-setup)
 
@@ -211,3 +211,38 @@
 (setq vc-handled-backends nil)
 ;; (setq mgit-git-executable "git")
 (provide 'init-better-defaults)
+
+;; Run/highlight code using babel in org-mode
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (shell . t)
+   ;; Include other languages here ...
+   ))
+
+;; set keybinding to mark the current line.
+(global-set-key (kbd "<C-return>") (kbd "C-a C-SPC C-e"))
+
+;; auto insert text for python file.
+(auto-insert-mode 1)
+(eval-after-load 'autoinsert
+  '(define-auto-insert
+     '("\\.\\py\\'" . "python skeleton")
+     '(""
+       "#! /usr/bin/env python"\n
+       "# coding=utf-8"\n
+       "# ================================================================"\n
+       "#   Copyright (C) " (format-time-string "%Y" (current-time)) " * Ltd. All rights reserved."\n
+       "#"\n
+       "#   Editor      : EMACS"\n
+       "#   File name   : " (file-name-nondirectory (buffer-file-name))\n
+       "#   Author      : slgao"\n
+       "#   Created date: " (format-time-string "%a %b %d %Y %H:%M:%S" (current-time))\n 
+       "#   Description :"\n
+       "#"\n
+       "# ================================================================"\n
+       \n
+       > _ \n
+       )))
+
+
