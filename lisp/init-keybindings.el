@@ -105,4 +105,12 @@
 ;; (bind-key* "C-c C-n" 'flymake-goto-next-error)
 ;; (bind-key* "C-c C-p" 'flymake-goto-prev-error)
 
+;; set keybinding to mark the current line.
+(global-set-key (kbd "<C-return>") (kbd "C-a C-SPC C-e"))
+
+;; add numeric argument for yank to do multi yanks.
+(global-set-key (kbd "C-y") (lambda (n)
+			      (interactive "p")
+			      (dotimes (i (abs n)) (yank))))
+
 (provide 'init-keybindings)

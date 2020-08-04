@@ -220,8 +220,6 @@
    ;; Include other languages here ...
    ))
 
-;; set keybinding to mark the current line.
-(global-set-key (kbd "<C-return>") (kbd "C-a C-SPC C-e"))
 
 ;; auto insert text for python file.
 (auto-insert-mode 1)
@@ -244,5 +242,3 @@
        \n
        > _ \n
        )))
-
-
