@@ -40,6 +40,7 @@
  '(org-agenda-files
    (quote
     ("~/.emacs.d/org/schedule.org" "~/.emacs.d/org/TODO.org" "~/.emacs.d/org-gcal/gcal.org")))
+ '(org-export-backends (quote (ascii beamer html icalendar latex odt)))
  '(package-selected-packages
    (quote
     (flycheck magit vimrc-mode async timesheet flymake-python-pyflakes company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete counsel swiper monokai-theme)))

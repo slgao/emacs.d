@@ -259,6 +259,18 @@ Position the cursor at its beginning, according to the current mode."
             (yas-expand)))))
    #+END_SRC
 package helm-c-yasnippet can also be considered, which can select template from helm
+** orgmode beamer
+   #+BEGIN_SRC emacs-lisp
+       (require 'ox-latex)
+       (add-to-list 'org-latex-classes
+                    '("beamer"
+                      "\\documentclass\[presentation\]\{beamer\}"
+                      ("\\section\{%s\}" . "\\section*\{%s\}")
+                      ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+                      ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+   #+END_SRC
+   https://orgmode.org/worg/exporters/beamer/ox-beamer.html
+   or enable beamer setting by using customize-group, org-export, select beamer.
 ** provide package
    #+BEGIN_SRC emacs-lisp
      (provide 'init-utils)
