@@ -2,6 +2,10 @@
 #+BEGIN_SRC emacs-lisp
 (package-initialize)
 #+END_SRC
+** remove deprecated cl package error for emacs 2.7+
+#+BEGIN_SRC emacs-lisp
+(setq byte-compile-warnings '(cl-functions))
+#+END_SRC
 ** integrate emacs config from different modules
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp")
