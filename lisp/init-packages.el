@@ -54,6 +54,7 @@
 			  yasnippet-snippets
 			  gruvbox-theme
 			  htmlize
+			  eldoc
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
