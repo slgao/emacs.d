@@ -271,6 +271,29 @@ package helm-c-yasnippet can also be considered, which can select template from 
    #+END_SRC
    https://orgmode.org/worg/exporters/beamer/ox-beamer.html
    or enable beamer setting by using customize-group, org-export, select beamer.
+** org latex classes.
+   #+begin_src  emacs-lisp
+   (add-to-list 'org-latex-classes
+             '("bjmarticle"
+               "\\documentclass{article}
+	       \\usepackage[utf8]{inputenc}
+               \\usepackage[T1]{fontenc}
+               \\usepackage{graphicx}
+               \\usepackage{longtable}
+               \\usepackage{hyperref}
+               \\usepackage{natbib}
+               \\usepackage{amssymb}
+               \\usepackage{amsmath}
+               \\usepackage{geometry}
+               \\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+   #+end_src
+   http://pragmaticemacs.com/emacs/org-mode-basics-v-exporting-your-notes/
+   to use this #+LaTeX_CLASS: bjmarticle
 ** provide package
    #+BEGIN_SRC emacs-lisp
      (provide 'init-utils)

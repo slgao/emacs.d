@@ -107,7 +107,7 @@
 ;; config python evn
 ;; use function M-x pyvenv-activate to select python environment manually
 (if (eq system-type 'windows-nt)
-    (setenv "WORKON_HOME" "C:/Users/SGao0001/AppData/Local/Continuum/anaconda3/envs")
+    (setenv "WORKON_HOME" "c:/Users/SGao0001/Anaconda3/envs")
     (setenv "WORKON_HOME" "/anaconda3/envs")
 )
 (pyvenv-mode 1)
