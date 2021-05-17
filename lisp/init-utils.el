@@ -1,4 +1,3 @@
-
 (if (fboundp 'with-eval-after-load)
     (defalias 'after-load 'with-eval-after-load)
   (defmacro after-load (feature &rest body)
@@ -220,21 +219,48 @@ Position the cursor at its beginning, according to the current mode."
   (interactive)
     (let ((original-point (point)))
       (while (and
-              (not (= (point) (point-min) ))
-              (not
-               (string-match "[[:space:]\n]" (char-to-string (char-before)))))
-        (backward-word 1))
+	      (not (= (point) (point-min) ))
+	      (not
+	       (string-match "[[:space:]\n]" (char-to-string (char-before)))))
+	(backward-word 1))
     (let* ((init-word (point))
-           (word (buffer-substring init-word original-point))
-           (list (yas-active-keys)))
+	   (word (buffer-substring init-word original-point))
+	   (list (yas-active-keys)))
       (goto-char original-point)
       (let ((key (remove-if-not
-                  (lambda (s) (string-match (concat "^" word) s)) list)))
-        (if (= (length key) 1)
-            (setq key (pop key))
-          (setq key (ido-completing-read "key: " list nil nil word)))
-        (delete-char (- init-word original-point))
-        (insert key)
+		  (lambda (s) (string-match (concat "^" word) s)) list)))
+	(if (= (length key) 1)
+	    (setq key (pop key))
+	  (setq key (ido-completing-read "key: " list nil nil word)))
+	(delete-char (- init-word original-point))
+	(insert key)
         (yas-expand)))))
+
+(require 'ox-latex)
+(add-to-list 'org-latex-classes
+             '("beamer"
+               "\\documentclass\[presentation\]\{beamer\}"
+               ("\\section\{%s\}" . "\\section*\{%s\}")
+               ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+               ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+
+(add-to-list 'org-latex-classes
+          '("bjmarticle"
+            "\\documentclass{article}
+	    \\usepackage[utf8]{inputenc}
+            \\usepackage[T1]{fontenc}
+            \\usepackage{graphicx}
+            \\usepackage{longtable}
+            \\usepackage{hyperref}
+            \\usepackage{natbib}
+            \\usepackage{amssymb}
+            \\usepackage{amsmath}
+            \\usepackage{geometry}
+            \\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
+            ("\\section{%s}" . "\\section*{%s}")
+            ("\\subsection{%s}" . "\\subsection*{%s}")
+            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+            ("\\paragraph{%s}" . "\\paragraph*{%s}")
+            ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (provide 'init-utils)
