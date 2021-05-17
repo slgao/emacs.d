@@ -54,7 +54,6 @@
 			  yasnippet-snippets
 			  gruvbox-theme
 			  htmlize
-			  eldoc
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -107,17 +106,20 @@
 ;; config python evn
 ;; use function M-x pyvenv-activate to select python environment manually
 (if (eq system-type 'windows-nt)
-    (setenv "WORKON_HOME" "c:/Users/SGao0001/Anaconda3/envs")
-    (setenv "WORKON_HOME" "/anaconda3/envs")
+    ;; (setenv "WORKON_HOME" "c:/Users/SGao0001/Anaconda3/envs")
+    (setenv "WORKON_HOME" "~/Anaconda3/envs")
 )
 (pyvenv-mode 1)
 
 ;; config elpy
-
 (elpy-enable)
-;;(elpy-use-ipython)
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "-i --simple-prompt")
+;; disable eldoc on windows system´.
+(if (eq system-type 'windows-nt)
+    (setq elpy-modules (delq 'elpy-module-eldoc elpy-modules))
+)
+
 
 ;; config jedi
 (require 'jedi)

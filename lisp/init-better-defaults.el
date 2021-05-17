@@ -220,7 +220,6 @@
    ;; Include other languages here ...
    ))
 
-
 ;; auto insert text for python file.
 (auto-insert-mode 1)
 (eval-after-load 'autoinsert
@@ -242,3 +241,6 @@
        \n
        > _ \n
        )))
+
+;; add this to quick insertion of org templates.
+(require 'org-tempo)
