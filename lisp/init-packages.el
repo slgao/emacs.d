@@ -87,7 +87,6 @@
      ))
 (setq company-selection-wrap-around t)
 
-
 (require 'hungry-delete)
 (global-hungry-delete-mode)
 
@@ -106,8 +105,8 @@
 ;; config python evn
 ;; use function M-x pyvenv-activate to select python environment manually
 (if (eq system-type 'windows-nt)
-    ;; (setenv "WORKON_HOME" "c:/Users/SGao0001/Anaconda3/envs")
-    (setenv "WORKON_HOME" "~/Anaconda3/envs")
+    (setenv "WORKON_HOME" "c:/Users/SGao0001/Anaconda3/envs")
+    ;; (setenv "WORKON_HOME" "~/Anaconda3/envs")
 )
 (pyvenv-mode 1)
 
@@ -115,11 +114,13 @@
 (elpy-enable)
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "-i --simple-prompt")
-;; disable eldoc on windows system´.
+;; disable eldoc and company mode on windows system.
 (if (eq system-type 'windows-nt)
-    (setq elpy-modules (delq 'elpy-module-eldoc elpy-modules))
+    (progn
+	  (setq elpy-modules (delq 'elpy-module-eldoc elpy-modules))
+	  (setq elpy-modules (delq 'elpy-module-company elpy-modules))
+	  )
 )
-
 
 ;; config jedi
 (require 'jedi)
