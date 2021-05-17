@@ -158,7 +158,9 @@
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
 
 ;; global flycheck mode.
-;; (global-flycheck-mode)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 ;; set checker variable
 ;; (custom-set-variables
