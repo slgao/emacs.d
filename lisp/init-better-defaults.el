@@ -244,3 +244,33 @@
 
 ;; add this to quick insertion of org templates.
 (require 'org-tempo)
+
+
+;; #####################################
+;; WEB DEVELOPMENT
+;; #####################################
+
+;; auto-enable web-mode for .js and .jsx files
+(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+;; enable JSX syntax highlighting.
+(setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+;; Configure indentation
+(defun web-mode-init-hook ()
+  "Hooks for Web mode.  Adjust indent."
+  (setq web-mode-markup-indent-offset 4))
+(add-hook 'web-mode-hook  'web-mode-init-hook)
+
+;; disable default jslint
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint json-jsonlist)))
+;; Enable eslint checker for web-mode
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; Enable flycheck globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+;; backup in one place. flat, no tree structure
+(setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
+;; deactivating emacs writing lock files in React.js development to prevent server crashes.
+(setq create-lockfiles nil)
+;; enable to insert backtick in some modes
+(global-set-key [S-dead-grave] "`")
