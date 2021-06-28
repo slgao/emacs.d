@@ -266,8 +266,9 @@
                       '(javascript-jshint json-jsonlist)))
 ;; Enable eslint checker for web-mode
 (flycheck-add-mode 'javascript-eslint 'web-mode)
-;; Enable flycheck globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; Enable flycheck globally if not windows system.
+(if (not(eq system-type 'windows-nt))
+    (add-hook 'after-init-hook #'global-flycheck-mode))
 ;; backup in one place. flat, no tree structure
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 ;; deactivating emacs writing lock files in React.js development to prevent server crashes.
