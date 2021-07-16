@@ -245,6 +245,8 @@
 ;; add this to quick insertion of org templates.
 (require 'org-tempo)
 
+;; add ruler at maximum column
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 ;; #####################################
 ;; WEB DEVELOPMENT
@@ -273,5 +275,9 @@
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 ;; deactivating emacs writing lock files in React.js development to prevent server crashes.
 (setq create-lockfiles nil)
-;; enable to insert backtick in some modes
-(global-set-key [S-dead-grave] "`")
+;; enable dead keys
+(define-key key-translation-map [dead-grave] "`")
+(define-key key-translation-map [dead-acute] "'")
+(define-key key-translation-map [dead-circumflex] "^")
+(define-key key-translation-map [dead-diaeresis] "\"")
+(define-key key-translation-map [dead-tilde] "~")
