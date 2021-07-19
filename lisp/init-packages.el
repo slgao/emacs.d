@@ -296,6 +296,9 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 ;; (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
 
+;; add this to quick insertion of org templates.
+(require 'org-tempo)
+
 ;; add cygwin path
 (if (eq system-type 'windows-nt)
     (add-to-list 'exec-path "c:/cygwin64/bin/"))
@@ -360,6 +363,12 @@
 
 (add-hook 'js2-mode-hook (lambda ()
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
+;; slime settings
+(setq inferior-lisp-program "sbcl")
+(require 'slime-autoloads)
+(slime-setup '(slime-fancy))
+(slime-setup '(slime-company))
 
 (provide 'init-packages)
 ;;; init-package.el ends here

@@ -25,9 +25,6 @@
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
 (global-set-key (kbd "C-x C-;") 'toggle-comment-on-line)
 
-(global-set-key (kbd "C-c d") 'duplicate-line-or-region)
-(global-set-key (kbd "C-x c") 'xah-copy-line-or-region)
-
 ;; kbd ace-window
 (global-set-key (kbd "C-x o") 'ace-window)
 
@@ -107,6 +104,9 @@
 
 ;; set keybinding to mark the current line.
 (global-set-key (kbd "<C-return>") (kbd "C-a C-SPC C-e"))
+;; (global-set-key (kbd "C-x c") (kbd "C-a C-SPC C-e M-w"))
+(global-set-key (kbd "C-x c") 'xah-copy-line-or-region)
+(global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 
 ;; add numeric argument for yank to do multi yanks.
 (global-set-key (kbd "C-y") (lambda (n)
