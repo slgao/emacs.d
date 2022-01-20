@@ -58,6 +58,8 @@
 			  rjsx-mode
 			  xref-js2
 			  js2-refactor
+			  slime
+			  slime-company
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
