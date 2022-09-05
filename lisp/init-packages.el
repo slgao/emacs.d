@@ -61,6 +61,7 @@
 			  slime
 			  slime-company
 			  lsp-mode
+			  smart-mode-line
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
