@@ -60,6 +60,7 @@
 			  js2-refactor
 			  slime
 			  slime-company
+			  lsp-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -162,7 +163,7 @@
 ;; (when (require 'flycheck nil t)
 ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
 ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
 
 ;; global flycheck mode.
 ;; (use-package flycheck
@@ -371,6 +372,17 @@
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy))
 (slime-setup '(slime-company))
+
+;; ;; lsp-mode config
+;; ;; if you want to change prefix for lsp-mode keybindings.
+;; (setq lsp-keymap-prefix "s-l")
+
+;; (require 'lsp-mode)
+;; (add-hook 'python-mode-hook #'lsp)
+;; (add-hook 'java-mode-hook #'lsp)
+;; (add-hook 'c++-mode-hook #'lsp)
+
+(require 'dired+)
 
 (provide 'init-packages)
 ;;; init-package.el ends here
