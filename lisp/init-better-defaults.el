@@ -288,4 +288,3 @@
 
 ;; column indicator
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
->>>>>>> Stashed changes
