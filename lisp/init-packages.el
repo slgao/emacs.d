@@ -63,6 +63,7 @@
 			  lsp-mode
 			  smart-mode-line
 			  blacken
+			  dockerfile-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -329,9 +330,6 @@
 (global-set-key (kbd "C-c i") 'clang-format-region)
 (global-set-key (kbd "C-c u") 'clang-format-buffer)
 (setq clang-format-style-option "llvm")
-
-;; helm config
-(require 'helm-config)
 
 ;; config cmake-mode
 (require 'cmake-mode)
