@@ -93,38 +93,41 @@
   )
 
 (defun xah-copy-line-or-region ()
-  "Copy current line, or text selection.
+    "Copy current line or selection.
 When called repeatedly, append copy subsequent lines.
 When `universal-argument' is called first, copy whole buffer (respects `narrow-to-region').
 
-URL `http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html'
-Version 2016-06-18"
+URL `http://xahlee.info/emacs/emacs/emacs_copy_cut_current_line.html'
+Version: 2010-05-21 2022-10-03"
   (interactive)
-  (let (-p1 -p2)
+  (let ((inhibit-field-text-motion nil))
     (if current-prefix-arg
-        (setq -p1 (point-min) -p2 (point-max))
-      (if (use-region-p)
-          (setq -p1 (region-beginning) -p2 (region-end))
-        (setq -p1 (line-beginning-position) -p2 (line-end-position))))
-    (if (eq last-command this-command)
         (progn
-          (progn ; hack. exit if there's no more next line
-            (end-of-line)
-            (forward-char)
-            (backward-char))
-          ;; (push-mark (point) "NOMSG" "ACTIVATE")
-          (kill-append "\n" nil)
-          (kill-append (buffer-substring-no-properties (line-beginning-position) (line-end-position)) nil)
-          (message "Line copy appended"))
-      (progn
-        (kill-ring-save -p1 -p2)
-        (if current-prefix-arg
-            (message "Buffer text copied")
-          (message "Text copied"))))
-    (end-of-line)
-    (forward-char)
-    ))
-
+          (copy-region-as-kill (point-min) (point-max)))
+      (if (region-active-p)
+          (progn
+            (copy-region-as-kill (region-beginning) (region-end)))
+        (if (eq last-command this-command)
+            (if (eobp)
+                (progn )
+              (progn
+                (kill-append "\n" nil)
+                (kill-append
+                 (buffer-substring-no-properties (line-beginning-position) (line-end-position))
+                 nil)
+                (progn
+                  (end-of-line)
+                  (forward-char))))
+          (if (eobp)
+              (if (eq (char-before) 10 )
+                  (progn )
+                (progn
+                  (copy-region-as-kill (line-beginning-position) (line-end-position))
+                  (end-of-line)))
+            (progn
+              (copy-region-as-kill (line-beginning-position) (line-end-position))
+              (end-of-line)
+              (forward-char))))))))
 
 ;; self defined functions are here
 (defun toggle-comment-on-line ()
