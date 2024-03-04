@@ -64,6 +64,8 @@
 			  smart-mode-line
 			  blacken
 			  dockerfile-mode
+			  jenkinsfile-mode
+			  dotenv-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
