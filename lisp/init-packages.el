@@ -116,14 +116,19 @@
 
 ;; config python evn
 ;; use function M-x pyvenv-activate to select python environment manually
-(if (eq system-type 'windows-nt)
-    (setenv "WORKON_HOME" "c:/Users/SGao0001/Anaconda3/envs")
-    (setenv "WORKON_HOME" "~/anaconda3/envs")
-)
-(pyvenv-mode 1)
+;; (if (eq system-type 'windows-nt)
+;;     (setenv "WORKON_HOME" "C:/Users/SGao0001/AppData/Local/Continuum/anaconda3/envs")
+;;     (setenv "WORKON_HOME" "/anaconda3/envs")
+;; )
 
+(pyvenv-mode 1)
+;; on my mac
+(pyvenv-activate "~/my-python-envs/emacs-elpy-env")
+;; set the elpy rpc command
+(setq elpy-rpc-python-command "python")
 ;; config elpy
 (elpy-enable)
+
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "-i --simple-prompt")
 ;; disable eldoc and company mode on windows system.
@@ -133,6 +138,7 @@
 	  (setq elpy-modules (delq 'elpy-module-company elpy-modules))
 	  )
 )
+
 
 ;; config jedi
 (require 'jedi)
@@ -384,8 +390,50 @@
 ;; (add-hook 'java-mode-hook #'lsp)
 ;; (add-hook 'c++-mode-hook #'lsp)
 
-(require 'dired+)
+;; (require 'dired+)
+
+;; Install Copilot
+;; Install straight first
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+;; Install Copilot
+(use-package copilot
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :hook ((
+	  python-mode
+          sh-mode
+          c-mode
+          c++-mode
+          ;; emacs-lisp-mode
+          ;; js-mode
+          ;; js2-mode
+          ;; typescript-mode
+	  ;; yaml-mode
+	  ;; html-mode
+	  ) . copilot-mode)
+  :config
+  ;; Keybindings
+  ;; set keybinding for copilot to accept completion
+  (define-key copilot-mode-map (kbd "C-M-<return>") #'copilot-accept-completion)
+  (define-key copilot-mode-map (kbd "C-M-<prior>") #'copilot-previous-completion)
+  (define-key copilot-mode-map (kbd "C-M-<next>") #'copilot-next-completion)
+  (define-key copilot-mode-map (kbd "C-M-<right>") #'copilot-accept-completion-by-word)
+  (define-key copilot-mode-map (kbd "C-M-<down>") #'copilot-accept-completion-by-line)
+  (define-key copilot-mode-map (kbd "C-c C-c") #'copilot-clear-overlay))
 
 (provide 'init-packages)
 ;;; init-package.el ends here
-
