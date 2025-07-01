@@ -67,6 +67,7 @@
 			  dockerfile-mode
 			  jenkinsfile-mode
 			  dotenv-mode
+			  php-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -423,8 +424,9 @@
           ;; js-mode
           ;; js2-mode
           ;; typescript-mode
-	  ;; yaml-mode
+	  yaml-mode
 	  ;; html-mode
+	  terraform-mode
 	  ) . copilot-mode)
   :config
   ;; Keybindings
@@ -435,6 +437,22 @@
   (define-key copilot-mode-map (kbd "C-M-<right>") #'copilot-accept-completion-by-word)
   (define-key copilot-mode-map (kbd "C-M-<down>") #'copilot-accept-completion-by-line)
   (define-key copilot-mode-map (kbd "C-c C-c") #'copilot-clear-overlay))
+
+;; Install Terraform
+(use-package terraform-mode
+  ;; if using straight
+  ;; :straight t
+
+  ;; if using package.el
+  :ensure t
+  :custom (terraform-indent-level 4)
+  :config
+  (defun my-terraform-mode-init ()
+    ;; if you want to use outline-minor-mode
+    ;; (outline-minor-mode 1)
+    )
+
+  (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 
 (provide 'init-packages)
 ;;; init-package.el ends here
