@@ -42,6 +42,7 @@
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
+ '(terraform-indent-level 2)
  '(timesheet-invoice-number 101)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
