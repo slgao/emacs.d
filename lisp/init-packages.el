@@ -68,6 +68,7 @@
 			  jenkinsfile-mode
 			  dotenv-mode
 			  php-mode
+			  git-modes
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -453,6 +454,13 @@
     )
 
   (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
+
+;; lsp-mode for Terraform-lsp emacs
+;; if you want to change prefix for lsp-mode keybindings.
+(setq lsp-keymap-prefix "s-l")
+
+(require 'lsp-mode)
+(add-hook 'terraform-mode-hook #'lsp)
 
 (provide 'init-packages)
 ;;; init-package.el ends here
