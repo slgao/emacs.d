@@ -35,7 +35,7 @@
 			  expand-region
 			  iedit
 			  multiple-cursors
-			  ein
+			  ;;ein
 			  org-gcal
 			  sphinx-doc
 			  clang-format
@@ -281,15 +281,17 @@
 ;; config multiple-cursors
 (require 'multiple-cursors)
 
-(require 'ein)
-;; (require 'ein-loaddefs)
-(require 'ein-notebook)
-;; enable auto-complete for ein
-(setq ein:use-auto-complete t)
-;; Or, to enable "superpack" (a little bit hacky improvements):
-;; (setq ein:use-auto-complete-superpack t)
-;; enable smartrep
-(setq ein:use-smartrep t)
+;; (require 'ein)
+;; (require 'ein-core)
+;; (require 'ein-cell)
+;; ;; (require 'ein-loaddefs)
+;; (require 'ein-notebook)
+;; ;; enable auto-complete for ein
+;; (setq ein:use-auto-complete t)
+;; ;; Or, to enable "superpack" (a little bit hacky improvements):
+;; ;; (setq ein:use-auto-complete-superpack t)
+;; ;; enable smartrep
+;; (setq ein:use-smartrep t)
 
 ;; try company-anaconda
 ;; I commented this out because I also use jedi mode to complete the code
@@ -395,43 +397,16 @@
 
 ;; (require 'dired+)
 
-;; Install Copilot
-;; Install straight first
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
-
-;; Install Copilot
+;; Install Copilot via MELPA
 (use-package copilot
-  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :hook ((
-	  python-mode
+  :ensure t
+  :hook ((python-mode
           sh-mode
           c-mode
           c++-mode
-          ;; emacs-lisp-mode
-          ;; js-mode
-          ;; js2-mode
-          ;; typescript-mode
-	  yaml-mode
-	  ;; html-mode
-	  terraform-mode
-	  ) . copilot-mode)
+          yaml-mode
+          terraform-mode) . copilot-mode)
   :config
-  ;; Keybindings
-  ;; set keybinding for copilot to accept completion
   (define-key copilot-mode-map (kbd "C-M-<return>") #'copilot-accept-completion)
   (define-key copilot-mode-map (kbd "C-M-<prior>") #'copilot-previous-completion)
   (define-key copilot-mode-map (kbd "C-M-<next>") #'copilot-next-completion)
@@ -441,10 +416,6 @@
 
 ;; Install Terraform
 (use-package terraform-mode
-  ;; if using straight
-  ;; :straight t
-
-  ;; if using package.el
   :ensure t
   :custom (terraform-indent-level 4)
   :config

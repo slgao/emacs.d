@@ -210,7 +210,6 @@
 ;; this may result magit not working properly, but speed up emacs a lot.
 (setq vc-handled-backends nil)
 ;; (setq mgit-git-executable "git")
-(provide 'init-better-defaults)
 
 ;; Run/highlight code using babel in org-mode
 (org-babel-do-load-languages
@@ -288,3 +287,5 @@
 
 ;; column indicator
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+(provide 'init-better-defaults)
