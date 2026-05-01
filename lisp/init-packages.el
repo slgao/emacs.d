@@ -131,7 +131,8 @@
 ;; (setq elpy-rpc-python-command "python3")
 ;; (elpy-enable)
 
-(setq python-shell-interpreter "python3"
+(setq python-shell-interpreter
+      (if (eq system-type 'windows-nt) "python" "python3")
       python-shell-interpreter-args "-i")
 
 ;; jedi disabled in favour of lsp-mode for goto-definition
