@@ -125,15 +125,14 @@
 ;; )
 
 (pyvenv-mode 1)
-;; on my mac
-(pyvenv-activate "~/my-python-envs/emacs-elpy-env")
+;; (pyvenv-activate "~/my-python-envs/emacs-elpy-env")
 ;; set the elpy rpc command
-(setq elpy-rpc-python-command "python")
+(setq elpy-rpc-python-command "python3")
 ;; config elpy
 (elpy-enable)
 
-(setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "-i --simple-prompt")
+(setq python-shell-interpreter "python3"
+      python-shell-interpreter-args "-i")
 ;; disable eldoc and company mode on windows system.
 (if (eq system-type 'windows-nt)
     (progn
@@ -142,20 +141,15 @@
 	  )
 )
 
-
-;; config jedi
-(require 'jedi)
-(add-to-list 'ac-sources 'ac-source-jedi-direct)
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-;; set jedi as company backends.
-;; if elpy-rpc-backend is set to jedi, company-backends may be also
-;; be set accordingly.
-(defun company-backends/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-(add-hook 'python-mode-hook 'company-backends/python-mode-hook)
-;; set elpy backend to jedi, comment it out since the newer version of elpy works good.
-(setq elpy-rpc-backend "jedi")
+;; jedi disabled in favour of lsp-mode for goto-definition
+;; (require 'jedi)
+;; (add-to-list 'ac-sources 'ac-source-jedi-direct)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
+;; (defun company-backends/python-mode-hook ()
+;;   (add-to-list 'company-backends 'company-jedi))
+;; (add-hook 'python-mode-hook 'company-backends/python-mode-hook)
+;; (setq elpy-rpc-backend "jedi")
 
 ;; config irony mode
 (add-hook 'c++-mode-hook 'irony-mode)
@@ -390,10 +384,9 @@
 ;; ;; if you want to change prefix for lsp-mode keybindings.
 ;; (setq lsp-keymap-prefix "s-l")
 
-;; (require 'lsp-mode)
-;; (add-hook 'python-mode-hook #'lsp)
 ;; (add-hook 'java-mode-hook #'lsp)
 ;; (add-hook 'c++-mode-hook #'lsp)
+(add-hook 'python-mode-hook #'lsp)
 
 ;; (require 'dired+)
 

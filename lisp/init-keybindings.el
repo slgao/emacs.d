@@ -83,14 +83,13 @@
   (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
   (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
 
-;; change jedi goto-definition keybindings
-;; change elpy backend to jedi does not use jedi:goto-definition
-(eval-after-load 'jedi
-  '(progn
-     (define-key jedi-mode-map (kbd "C-c .") nil)
-     (define-key jedi-mode-map (kbd "M-.") 'jedi:goto-definition)     
-     (define-key jedi-mode-map (kbd "C-c ,") nil)
-     (define-key jedi-mode-map (kbd "M-,") 'jedi:goto-definition-pop-marker)))
+;; jedi keybindings disabled; lsp-mode handles M-. via xref in python-mode
+;; (eval-after-load 'jedi
+;;   '(progn
+;;      (define-key jedi-mode-map (kbd "C-c .") nil)
+;;      (define-key jedi-mode-map (kbd "M-.") 'jedi:goto-definition)
+;;      (define-key jedi-mode-map (kbd "C-c ,") nil)
+;;      (define-key jedi-mode-map (kbd "M-,") 'jedi:goto-definition-pop-marker)))
 
 ;; kbd to kill compilation
 (global-set-key (kbd "C-c C-k") 'kill-compilation)
