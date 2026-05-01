@@ -105,8 +105,9 @@
 (require 'hungry-delete)
 (global-hungry-delete-mode)
 
-;; config exec-path-from-shell
-(when (memq window-system '(mac ns))
+;; config exec-path-from-shell — include Linux GUI (x) so pylsp and other
+;; ~/.local/bin tools are visible to Emacs
+(when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
 ;; config swiper
