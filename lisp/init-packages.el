@@ -125,21 +125,13 @@
 ;; )
 
 (pyvenv-mode 1)
+;; elpy disabled; lsp-mode handles completion, navigation, and diagnostics
 ;; (pyvenv-activate "~/my-python-envs/emacs-elpy-env")
-;; set the elpy rpc command
-(setq elpy-rpc-python-command "python3")
-;; config elpy
-(elpy-enable)
+;; (setq elpy-rpc-python-command "python3")
+;; (elpy-enable)
 
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
-;; disable eldoc and company mode on windows system.
-(if (eq system-type 'windows-nt)
-    (progn
-	  (setq elpy-modules (delq 'elpy-module-eldoc elpy-modules))
-	  (setq elpy-modules (delq 'elpy-module-company elpy-modules))
-	  )
-)
 
 ;; jedi disabled in favour of lsp-mode for goto-definition
 ;; (require 'jedi)
