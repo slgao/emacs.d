@@ -98,10 +98,14 @@ Then complete the one-time manual setup steps described below for each language/
 - `C-x o` - Ace window (quick window switching)
 - `C-c a` - Org agenda
 - `M-/` - Hippie expand (smart completion)
+- `C-c f` - Open current directory in OS file manager
+- `C-c r` - Revert (reload) current buffer
 
 ### Development
 - `M-.` - Go to definition (via lsp-mode / xref)
 - `M-,` - Go back after jump
+- `M-s i` - Browse symbols in current file (counsel-imenu, LSP-enriched)
+- `M-s I` - Search symbols across entire project (lsp-ivy workspace)
 - `C-h C-f` - Find function definition
 - `C-h C-v` - Find variable definition
 - `C-h C-k` - Find function on key

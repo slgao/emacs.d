@@ -35,6 +35,9 @@
 ;; kbd to refresh buffer
 (global-set-key (kbd "C-c r") 'revert-buffer)
 
+;; kbd to open current directory in OS file manager
+(global-set-key (kbd "C-c f") 'open-in-file-manager)
+
 ;; kbd to move line or regions up and down
 (move-lines-binding)
 
