@@ -62,6 +62,7 @@
 			  slime
 			  slime-company
 			  lsp-mode
+			  lsp-ivy
 			  smart-mode-line
 			  blacken
 			  dockerfile-mode
@@ -418,12 +419,25 @@
 (setq lsp-keymap-prefix "s-l")
 
 (require 'lsp-mode)
+(require 'lsp-ivy)
 (add-hook 'terraform-mode-hook #'lsp)
 
-;; Use the built-in major-mode imenu (flat function/class list) instead of
-;; lsp's hierarchical document-symbol view, so M-s i (counsel-imenu) shows
-;; a clean function list as before.
-(setq lsp-enable-imenu nil)
+;; M-s i (counsel-imenu) uses lsp-mode's imenu symbols in lsp buffers.
+;; M-s I searches symbols project-wide across all workspace files.
+(with-eval-after-load 'lsp-mode
+  (define-key lsp-mode-map (kbd "M-s I") #'lsp-ivy-workspace-symbol))
+
+;; Open the current buffer's directory in the OS file manager.
+(defun open-in-file-manager ()
+  "Open the directory of the current buffer in the system file manager."
+  (interactive)
+  (let ((dir (if (buffer-file-name)
+                 (file-name-directory (buffer-file-name))
+               default-directory)))
+    (cond
+     ((eq system-type 'gnu/linux)  (start-process "" nil "xdg-open" dir))
+     ((eq system-type 'darwin)     (start-process "" nil "open" dir))
+     ((eq system-type 'windows-nt) (w32-shell-execute "open" dir)))))
 
 (provide 'init-packages)
 ;;; init-package.el ends here
