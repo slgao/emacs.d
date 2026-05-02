@@ -420,5 +420,10 @@
 (require 'lsp-mode)
 (add-hook 'terraform-mode-hook #'lsp)
 
+;; Use the built-in major-mode imenu (flat function/class list) instead of
+;; lsp's hierarchical document-symbol view, so M-s i (counsel-imenu) shows
+;; a clean function list as before.
+(setq lsp-enable-imenu nil)
+
 (provide 'init-packages)
 ;;; init-package.el ends here
