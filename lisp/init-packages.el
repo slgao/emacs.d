@@ -381,7 +381,13 @@
 
 ;; (add-hook 'java-mode-hook #'lsp)
 ;; (add-hook 'c++-mode-hook #'lsp)
-(add-hook 'python-mode-hook #'lsp)
+
+;; Start LSP after dir-locals are applied so pyvenv-activate in .dir-locals.el
+;; runs first, giving LSP the correct Python interpreter from the start.
+(add-hook 'hack-local-variables-hook
+          (lambda ()
+            (when (derived-mode-p 'python-mode)
+              (lsp))))
 
 ;; (require 'dired+)
 
