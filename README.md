@@ -1,6 +1,6 @@
 # My Emacs Configuration
 
-A comprehensive Emacs configuration focused on Python and C++ development with modern IDE-like features.
+A comprehensive Emacs configuration focused on Python, C++, and Go development with modern IDE-like features.
 
 ## Quick Start
 
@@ -181,6 +181,16 @@ Install the Terraform LSP server:
 # and place the binary somewhere on your PATH
 ```
 
+### Go (go-mode + gopls)
+
+1. Install Go from https://go.dev/dl/
+2. Install the Go language server:
+   ```bash
+   go install golang.org/x/tools/gopls@latest
+   ```
+
+No further Emacs configuration needed — lsp-mode auto-starts, `gofmt`/`goimports` runs on save, and Copilot is active in `go-mode` buffers.
+
 ## Package Management
 
 Packages are managed via MELPA/ELPA (`package.el`). On first Emacs startup, all packages listed in `shulin/packages` in `lisp/init-packages.el` are installed automatically.
@@ -229,6 +239,7 @@ Run `M-x copilot-install-server` (requires npm).
 - Node.js 18+ and npm (for Copilot)
 - Clang (for C++ development)
 - CMake (for C++ project management)
+- Go 1.18+ with `gopls` (for Go development)
 
 ## License
 

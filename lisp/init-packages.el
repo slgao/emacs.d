@@ -70,6 +70,7 @@
 			  dotenv-mode
 			  php-mode
 			  git-modes
+			  go-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -405,7 +406,8 @@
           c-mode
           c++-mode
           yaml-mode
-          terraform-mode) . copilot-mode)
+          terraform-mode
+          go-mode) . copilot-mode)
   :config
   (define-key copilot-mode-map (kbd "C-M-<return>") #'copilot-accept-completion)
   (define-key copilot-mode-map (kbd "C-M-<prior>") #'copilot-previous-completion)
@@ -450,6 +452,19 @@
      ((eq system-type 'gnu/linux)  (start-process "" nil "xdg-open" dir))
      ((eq system-type 'darwin)     (start-process "" nil "open" dir))
      ((eq system-type 'windows-nt) (w32-shell-execute "open" dir)))))
+
+;; Go mode config
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :hook ((go-mode . lsp)
+         (go-mode . (lambda ()
+                      (setq tab-width 4)
+                      (setq indent-tabs-mode t)))
+         (before-save . (lambda ()
+                          (when (eq major-mode 'go-mode)
+                            (lsp-format-buffer)
+                            (lsp-organize-imports))))))
 
 (provide 'init-packages)
 ;;; init-package.el ends here
