@@ -71,6 +71,7 @@
 			  php-mode
 			  git-modes
 			  go-mode
+			  typescript-mode
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
@@ -128,10 +129,11 @@
 ;; )
 
 (pyvenv-mode 1)
-;; elpy disabled; lsp-mode handles completion, navigation, and diagnostics
-;; (pyvenv-activate "~/my-python-envs/emacs-elpy-env")
-;; (setq elpy-rpc-python-command "python3")
-;; (elpy-enable)
+;; Activate the default env (if it exists on this machine) so pylsp is on exec-path
+;; for Python files that don't sit inside a project-level venv/.venv.
+(let ((default-venv (expand-file-name "~/my-python-envs/emacs-elpy-env")))
+  (when (file-directory-p default-venv)
+    (pyvenv-activate default-venv)))
 
 (setq python-shell-interpreter
       (if (eq system-type 'windows-nt) "python" "python3")
@@ -407,7 +409,8 @@
           c++-mode
           yaml-mode
           terraform-mode
-          go-mode) . copilot-mode)
+          go-mode
+          typescript-mode) . copilot-mode)
   :config
   (define-key copilot-mode-map (kbd "C-M-<return>") #'copilot-accept-completion)
   (define-key copilot-mode-map (kbd "C-M-<prior>") #'copilot-previous-completion)
@@ -465,6 +468,18 @@
                           (when (eq major-mode 'go-mode)
                             (lsp-format-buffer)
                             (lsp-organize-imports))))))
+
+;; TypeScript mode config
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'"
+  :hook ((typescript-mode . lsp)
+         (typescript-mode . (lambda ()
+                               (setq typescript-indent-level 2))))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode)))
+
+(add-hook 'typescript-mode-hook 'copilot-mode)
 
 (provide 'init-packages)
 ;;; init-package.el ends here

@@ -285,6 +285,18 @@
 ;; enable to insert backtick in some modes
 (global-set-key [S-dead-grave] "`")
 
+;; Performance optimizations
+;; Increase GC threshold during startup
+(setq gc-cons-threshold (* 50 1000 1000))
+;; Reset GC threshold after startup (optional)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 2 1000 1000))))
+;; Improve process communication
+(setq read-process-output-max (* 1024 1024))
+;; Smoother redisplay
+(setq redisplay-dont-pause t)
+
 ;; column indicator
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
