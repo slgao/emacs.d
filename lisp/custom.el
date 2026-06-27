@@ -41,6 +41,10 @@
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
+ '(safe-local-variable-values
+   '((eval pyvenv-activate
+	   (expand-file-name "venv"
+			     (locate-dominating-file default-directory ".dir-locals.el")))))
  '(show-paren-mode t)
  '(terraform-indent-level 2)
  '(timesheet-invoice-number 101)
@@ -74,7 +78,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 155 :width normal :foundry "nil" :family "Monaco"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
  '(ac-candidate-face ((t (:background "#3C3D37" :foreground "#66D9EF"))))
  '(bold ((t (:weight bold))))
  '(flycheck-error ((t (:underline "orange red"))))

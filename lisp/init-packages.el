@@ -369,6 +369,8 @@
 ;; unbind it.
 (define-key js-mode-map (kbd "M-.") nil)
 
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
+
 (add-hook 'js2-mode-hook (lambda ()
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
