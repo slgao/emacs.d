@@ -439,6 +439,10 @@
 
 (require 'lsp-mode)
 (require 'lsp-ivy)
+
+;; tsgo (@typescript/native-preview) is incompatible with lsp-mode's
+;; inlineCompletion:null capability — use typescript-language-server instead.
+(setq lsp-disabled-clients '(tsgo))
 (add-hook 'terraform-mode-hook #'lsp)
 
 ;; M-s i (counsel-imenu) uses lsp-mode's imenu symbols in lsp buffers.
@@ -479,7 +483,8 @@
          (typescript-mode . (lambda ()
                                (setq typescript-indent-level 2))))
   :config
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode)))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (define-key typescript-mode-map (kbd "M-.") nil))
 
 (add-hook 'typescript-mode-hook 'copilot-mode)
 
