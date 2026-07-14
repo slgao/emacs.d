@@ -15,13 +15,16 @@ Then complete the one-time manual setup steps described below for each language/
 ## Features
 
 ### Core IDE Features
-- **Auto-completion**: Company mode with intelligent backends
+- **Auto-completion**: Company mode with LSP backends (manual trigger: `C-c c`)
 - **Syntax checking**: Flycheck with language-specific linters
-- **Project navigation**: Ivy/Counsel/Swiper for fuzzy searching
-- **Version control**: Magit integration for Git
+- **Project management**: Projectile + counsel-projectile — fuzzy find file in project (`C-c p f`), switch project (`C-c p p`)
+- **Project-wide search**: counsel-rg live grep (`M-s r`, requires ripgrep)
+- **Keybinding discovery**: which-key shows available bindings after any prefix
+- **Version control**: Magit integration plus diff-hl change markers in the fringe
+- **Navigation**: Ivy/Counsel/Swiper fuzzy searching, line numbers in code buffers
 - **Window management**: Ace-window for quick window switching
-- **File management**: Enhanced Dired with dired+
 - **Multiple cursors**: Edit multiple locations simultaneously
+- **Performance**: GC tuned for lsp-mode; slow minor modes auto-disabled in files >100KB
 
 ### Python Development
 - **LSP mode**: Full IDE experience via `pylsp` (goto-definition, completion, diagnostics)
@@ -38,8 +41,13 @@ Then complete the one-time manual setup steps described below for each language/
 - **Flycheck-irony**: Real-time syntax checking
 - **Helm-gtags**: Code navigation and symbol lookup
 
+### TypeScript/JavaScript Development
+- **LSP mode**: via `typescript-language-server` for `.ts` files (tsgo is disabled for compatibility)
+- **js2-mode**: for `.js`/`.mjs` files with xref navigation
+- **web-mode**: for `.tsx`/`.jsx` and HTML templates
+
 ### AI Assistance
-- **GitHub Copilot**: Inline completions in Python, C/C++, shell, YAML, and Terraform
+- **GitHub Copilot**: Inline completions in Python, C/C++, Go, TypeScript, shell, YAML, and Terraform
   - Accept completion: `C-M-<return>`
   - Next/previous suggestion: `C-M-<next>` / `C-M-<prior>`
   - Accept by word: `C-M-<right>`
@@ -47,10 +55,11 @@ Then complete the one-time manual setup steps described below for each language/
   - Clear overlay: `C-c C-c`
 
 ### UI/UX Enhancements
-- **Themes**: Multiple themes available (Gruvbox default, Monokai, Zenburn, etc.)
+- **Themes**: Gruvbox (default) and Monokai
+- **Per-OS font**: Ubuntu Mono on Linux, Monaco on macOS, Consolas on Windows (edit in `lisp/init-ui.el`)
 - **Smart defaults**: Sensible configuration out of the box
 - **Custom keybindings**: Optimized workflow shortcuts
-- **Visual indicators**: Line highlighting, parentheses matching
+- **Visual indicators**: Line numbers, line highlighting, parentheses matching
 - **Time display**: Date and time in mode line
 - **Recent files**: Quick access to recently opened files
 
@@ -98,12 +107,21 @@ Then complete the one-time manual setup steps described below for each language/
 - `C-x o` - Ace window (quick window switching)
 - `C-c a` - Org agenda
 - `M-/` - Hippie expand (smart completion)
+- `C-c c` - Manually trigger company completion
 - `C-c f` - Open current directory in OS file manager
 - `C-c r` - Revert (reload) current buffer
+- `C-x g` - Magit status
+
+### Project (Projectile)
+- `C-c p f` - Find file in project (fuzzy, like VS Code Ctrl+P)
+- `C-c p p` - Switch project
+- `C-c p` + wait - which-key shows all project commands
+- `M-s r` - Live grep across project (counsel-rg, needs ripgrep)
 
 ### Development
 - `M-.` - Go to definition (via lsp-mode / xref)
 - `M-,` - Go back after jump
+- `C-c l` - LSP command prefix (rename, code actions, ... — which-key lists them)
 - `M-s i` - Browse symbols in current file (counsel-imenu, LSP-enriched)
 - `M-s I` - Search symbols across entire project (lsp-ivy workspace)
 - `C-h C-f` - Find function definition
@@ -173,6 +191,27 @@ Inside Emacs, run once per project:
 M-x irony-install-server
 ```
 
+### TypeScript (lsp-mode)
+
+```bash
+npm install -g typescript-language-server typescript
+```
+
+No further Emacs configuration needed — lsp-mode auto-starts for `.ts` files.
+
+### Project search (ripgrep)
+
+```bash
+# Linux
+sudo apt install ripgrep
+
+# macOS
+brew install ripgrep
+
+# Windows
+winget install BurntSushi.ripgrep.MSVC
+```
+
 ### Terraform (lsp-mode)
 
 Install the Terraform LSP server:
@@ -233,10 +272,11 @@ Run `M-x copilot-install-server` (requires npm).
 
 ## Requirements
 
-- Emacs 26+
+- Emacs 27+ (29+ recommended for native compilation)
 - Git
+- ripgrep (for project-wide search, `M-s r`)
 - Python 3.6+ with pip
-- Node.js 18+ and npm (for Copilot)
+- Node.js 18+ and npm (for Copilot and typescript-language-server)
 - Clang (for C++ development)
 - CMake (for C++ project management)
 - Go 1.18+ with `gopls` (for Go development)
