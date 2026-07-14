@@ -443,6 +443,21 @@
 ;; tsgo (@typescript/native-preview) is incompatible with lsp-mode's
 ;; inlineCompletion:null capability — use typescript-language-server instead.
 (setq lsp-disabled-clients '(tsgo))
+
+;; Disable per-cursor-move features that make large files crawl.
+(setq lsp-enable-symbol-highlighting nil)  ; no document-highlight on every move
+(setq lsp-idle-delay 0.5)                 ; debounce LSP requests
+
+;; Skip LSP and Copilot entirely for large files (over ~500KB).
+(defun my/disable-lsp-for-large-files ()
+  (when (> (buffer-size) 500000)
+    (lsp-mode -1)))
+(add-hook 'lsp-after-open-hook #'my/disable-lsp-for-large-files)
+
+(defun my/disable-copilot-for-large-files ()
+  (when (> (buffer-size) 500000)
+    (copilot-mode -1)))
+(add-hook 'copilot-mode-hook #'my/disable-copilot-for-large-files)
 (add-hook 'terraform-mode-hook #'lsp)
 
 ;; M-s i (counsel-imenu) uses lsp-mode's imenu symbols in lsp buffers.
