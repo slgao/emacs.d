@@ -21,6 +21,11 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-M-\\") 'indent-region-or-buffer)
 (global-set-key (kbd "M-/") 'hippie-expand)
+;; manually trigger company completion (escape hatch for the idle
+;; delay / 2-char minimum prefix, e.g. for 1-char candidates)
+(global-set-key (kbd "C-c c") 'company-complete)
+;; project-wide live grep (needs the ripgrep binary installed)
+(global-set-key (kbd "M-s r") 'counsel-rg)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
 (global-set-key (kbd "C-x C-;") 'toggle-comment-on-line)
