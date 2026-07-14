@@ -206,10 +206,9 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-;; fix for slow emacs when saving files
-;; this may result magit not working properly, but speed up emacs a lot.
-(setq vc-handled-backends nil)
-;; (setq mgit-git-executable "git")
+;; Only handle Git in the vc layer (skip probing for svn/hg/bzr... on every
+;; save). Git itself must stay enabled for diff-hl's fringe indicators.
+(setq vc-handled-backends '(Git))
 
 ;; Run/highlight code using babel in org-mode
 (org-babel-do-load-languages
