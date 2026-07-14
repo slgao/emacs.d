@@ -1,4 +1,17 @@
 (setq custom-safe-themes t)
+
+;; Per-OS default font. Kept out of custom.el so the same file works across
+;; machines (custom.el used to hard-code the font and caused merge conflicts).
+;; Runs on after-init-hook so it applies after custom.el is loaded.
+(defun my/set-default-font ()
+  (cond
+   ((eq system-type 'darwin)
+    (set-face-attribute 'default nil :family "Monaco" :height 155))
+   ((eq system-type 'windows-nt)
+    (set-face-attribute 'default nil :family "Consolas" :height 110))
+   (t
+    (set-face-attribute 'default nil :family "Ubuntu Mono" :height 105))))
+(add-hook 'after-init-hook #'my/set-default-font)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (setq inhibit-splash-screen t)
