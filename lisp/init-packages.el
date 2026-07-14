@@ -416,6 +416,10 @@
 ;; the lsp-ui sideline already shows code actions (9% CPU in profiling).
 (setq lsp-modeline-code-actions-enable nil)
 
+;; Don't register filesystem watchers over the whole workspace — a known
+;; slowdown in large repos, and the servers we use barely rely on them.
+(setq lsp-enable-file-watchers nil)
+
 ;; Disable slow minor modes for large files (>100KB). append=t ensures this
 ;; runs after smartparens-global-mode's find-file-hook, which would otherwise
 ;; re-enable smartparens-mode after we disable it. LSP stays enabled — the
@@ -456,7 +460,7 @@
         lsp-ui-doc-border "#928374")
   (set-face-attribute 'lsp-ui-doc-background nil :background "#32302f")
   (set-face-attribute 'lsp-ui-doc-header nil
-                      :background "#458588" :foreground "#ebdbb2" :weight 'bold)
+                      :background "#3c3836" :foreground "#83a598" :weight 'bold)
   ;; peek views instead of plain xref buffers
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
 

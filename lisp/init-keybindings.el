@@ -116,8 +116,10 @@
 (global-set-key (kbd "C-c d") 'duplicate-line-or-region)
 
 ;; add numeric argument for yank to do multi yanks.
+;; this-command must stay 'yank or M-y (yank-pop) refuses to run afterwards.
 (global-set-key (kbd "C-y") (lambda (n)
 			      (interactive "p")
-			      (dotimes (i (abs n)) (yank))))
+			      (dotimes (_ (abs n)) (yank))
+			      (setq this-command 'yank)))
 
 (provide 'init-keybindings)

@@ -292,6 +292,14 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (setq gc-cons-threshold (* 32 1000 1000))))
+;; Suspend GC entirely while the minibuffer is active (ivy filtering churns
+;; memory; profiling showed 11% GC during counsel-M-x), restore shortly after.
+(add-hook 'minibuffer-setup-hook
+          (lambda () (setq gc-cons-threshold most-positive-fixnum)))
+(add-hook 'minibuffer-exit-hook
+          (lambda ()
+            (run-at-time 1 nil
+                         (lambda () (setq gc-cons-threshold (* 32 1000 1000))))))
 ;; Improve process communication (lsp-mode reads large JSON payloads)
 (setq read-process-output-max (* 1024 1024))
 
