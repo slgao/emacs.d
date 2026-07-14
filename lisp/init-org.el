@@ -1,7 +1,6 @@
-(require 'org)
+;; org is already loaded at this point (init.el loads config via ob-tangle)
 (setq org-src-fontify-natively t)
 
-; config org mode
-(setq org-agenda-files '("~/.emacs.d/org-gcal/gcal.org"))
+;; org-agenda-files is set in custom.el
 
 (provide 'init-org)

@@ -36,8 +36,6 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
    '("~/.emacs.d/org/schedule.org" "~/.emacs.d/org/TODO.org" "~/.emacs.d/org-gcal/gcal.org"))
- '(package-selected-packages
-   '(blacken lsp-mode flycheck magit vimrc-mode async timesheet flymake-python-pyflakes company-anaconda flycheck-pyflakes popwin pyvenv py-autopep8 elpy hungry-delete counsel swiper monokai-theme))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
@@ -78,7 +76,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 105 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
  '(ac-candidate-face ((t (:background "#3C3D37" :foreground "#66D9EF"))))
  '(bold ((t (:weight bold))))
  '(flycheck-error ((t (:underline "orange red"))))

@@ -5,74 +5,59 @@
   )
 
 ;;add whatever packages you want here
-(defvar shulin/packages '(
-                          company
+(defvar shulin/packages '(company
                           monokai-theme
-			  zenburn-theme
-			  tangotango-theme
-			  flatland-theme
-			  hungry-delete
-			  exec-path-from-shell
-			  swiper
-			  counsel
-			  smartparens
-			  elpy
-			  jedi
-			  virtualenv
-			  epc
-			  magit
-			  popwin
-			  flycheck
-			  py-autopep8
-			  emmet-mode
-			  web-mode
-			  ace-window
-			  ace-jump-mode
-			  undo-tree
-			  neotree
-			  all-the-icons
-			  js2-refactor
-			  expand-region
-			  iedit
-			  multiple-cursors
-			  ;;ein
-			  org-gcal
-			  sphinx-doc
-			  clang-format
-			  helm
-			  helm-gtags
-			  company-jedi
-			  irony
-			  cmake-mode
-			  cython-mode
-			  flycheck-cython
-			  flycheck-irony
-			  company-irony
-			  company-irony-c-headers
-			  use-package
-			  yaml-mode
-			  yasnippet
-			  yasnippet-snippets
-			  gruvbox-theme
-			  htmlize
-			  eldoc
-			  rjsx-mode
-			  xref-js2
-			  js2-refactor
-			  slime
-			  slime-company
-			  lsp-mode
-			  lsp-ivy
-			  smart-mode-line
-			  blacken
-			  dockerfile-mode
-			  jenkinsfile-mode
-			  dotenv-mode
-			  php-mode
-			  git-modes
-			  go-mode
-			  typescript-mode
-			  )  "Default packages")
+                          gruvbox-theme
+                          hungry-delete
+                          exec-path-from-shell
+                          swiper
+                          counsel
+                          smartparens
+                          pyvenv
+                          magit
+                          popwin
+                          flycheck
+                          py-autopep8
+                          blacken
+                          emmet-mode
+                          web-mode
+                          ace-window
+                          undo-tree
+                          neotree
+                          all-the-icons
+                          js2-refactor
+                          xref-js2
+                          expand-region
+                          iedit
+                          multiple-cursors
+                          sphinx-doc
+                          clang-format
+                          helm
+                          helm-gtags
+                          irony
+                          cmake-mode
+                          cython-mode
+                          flycheck-cython
+                          flycheck-irony
+                          company-irony
+                          company-irony-c-headers
+                          use-package
+                          yaml-mode
+                          yasnippet
+                          yasnippet-snippets
+                          htmlize
+                          slime
+                          slime-company
+                          lsp-mode
+                          lsp-ivy
+                          dockerfile-mode
+                          jenkinsfile-mode
+                          dotenv-mode
+                          php-mode
+                          git-modes
+                          go-mode
+                          typescript-mode)
+  "Default packages")
 
 (defun shulin/packages-installed-p ()
   (cl-every #'package-installed-p shulin/packages))
@@ -103,11 +88,12 @@
      ))
 (setq company-selection-wrap-around t)
 
-(require 'hungry-delete)
 (global-hungry-delete-mode)
 
 ;; config exec-path-from-shell — include Linux GUI (x) so pylsp and other
-;; ~/.local/bin tools are visible to Emacs
+;; ~/.local/bin tools are visible to Emacs. Use a non-interactive login shell:
+;; starting an interactive shell just to read $PATH slows down startup.
+(setq exec-path-from-shell-arguments '("-l"))
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
@@ -183,13 +169,11 @@
 
 
 ;; config popwin
-(require 'popwin)
 (popwin-mode t)
 
 ;;;;;;;;;;;;;;
 ;;emmet-mode
 ;;;;;;;;;;;;;
-(require 'emmet-mode)
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'html-mode-hook 'emmet-mode)
 (add-hook 'web-mode-hook 'emmet-mode)
@@ -198,7 +182,6 @@
 ;;;;;;;;;;;;;;
 ;;web-mode
 ;;;;;;;;;;;;;;;
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
@@ -243,25 +226,16 @@
 ;; config move-lines
 (require 'move-lines)
 
-;; add undo-tree mode 
-(require 'undo-tree)
+;; add undo-tree mode
 (global-undo-tree-mode)
 
-;; add neotree mode 
-(require 'neotree)
+;; add neotree mode
 (setq neo-smart-open t)
-
-;; add all-the-icons
-(require 'all-the-icons)
 ;; the fonts in all-the-icons packages should be installed if icons neo-theme is used
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq inhibit-compacting-font-caches t)
 
-;; config iedit
-(require 'iedit)
-
-;; config multiple-cursors
-(require 'multiple-cursors)
+;; iedit and multiple-cursors: commands are autoloaded, bound in init-keybindings
 
 ;; (require 'ein)
 ;; (require 'ein-core)
@@ -302,7 +276,6 @@
     (add-to-list 'exec-path "c:/cygwin64/bin/"))
 
 ;; py-autopep8 config
-(require 'py-autopep8)
 ;; enable formatting when python file is saved
 ;; (add-hook 'python-mode-hook 'py-autopep8-enable-on-save) ; commented out for efficiency
 (setq py-autopep8-options '("--max-line-length=100"))
@@ -317,21 +290,16 @@
 			      (require 'sphinx-doc)
 			      (sphinx-doc-mode t)))
 
-;; clang-format config
-(require 'clang-format)
+;; clang-format config (commands are autoloaded)
 (global-set-key (kbd "C-c i") 'clang-format-region)
 (global-set-key (kbd "C-c u") 'clang-format-buffer)
 (setq clang-format-style-option "llvm")
-
-;; config cmake-mode
-(require 'cmake-mode)
 
 ;; use flycheck for cython-mode
 (require 'flycheck-cython)
 (add-hook 'cython-mode-hook 'flycheck-mode)
 
 ;; config yaml-mode
-(require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 (require 'yapfify)
@@ -423,8 +391,7 @@
 ;; if you want to change prefix for lsp-mode keybindings.
 (setq lsp-keymap-prefix "s-l")
 
-(require 'lsp-mode)
-(require 'lsp-ivy)
+;; lsp-mode and lsp-ivy load lazily via autoloads on first `lsp' call.
 
 ;; tsgo (@typescript/native-preview) is incompatible with lsp-mode's
 ;; inlineCompletion:null capability — use typescript-language-server instead.

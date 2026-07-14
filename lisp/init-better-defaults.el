@@ -20,8 +20,7 @@
 (recentf-mode t)
 (setq recentf-max-menu-items 25)
 
-;; when cursor is at one side of parenthesis, highlight the other one
-(add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
+;; show-paren-mode is global and enabled via custom.el
 
 (delete-selection-mode t)
 
