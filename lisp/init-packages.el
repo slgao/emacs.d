@@ -1,4 +1,4 @@
-(require 'cl)
+(require 'cl-lib)
 (when (>= emacs-major-version 24)
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -75,9 +75,7 @@
 			  )  "Default packages")
 
 (defun shulin/packages-installed-p ()
-  (loop for pkg in shulin/packages
-        when (not (package-installed-p pkg)) do (return nil)
-        finally (return t)))
+  (cl-every #'package-installed-p shulin/packages))
 
 (unless (shulin/packages-installed-p)
   (message "%s" "Refreshing package database...")
@@ -184,10 +182,6 @@
 ;; )
 
 
-;; config pep8
-(require 'py-autopep8)
-					;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
 ;; config popwin
 (require 'popwin)
 (popwin-mode t)
@@ -263,10 +257,6 @@
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq inhibit-compacting-font-caches t)
 
-;; config js2-refactor
-(add-hook 'js2-mode-hook #'js2-refactor-mode)
-(js2r-add-keybindings-with-prefix "C-c C-m")
-
 ;; config iedit
 (require 'iedit)
 
@@ -307,9 +297,6 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 ;; (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
 
-;; add this to quick insertion of org templates.
-(require 'org-tempo)
-
 ;; add cygwin path
 (if (eq system-type 'windows-nt)
     (add-to-list 'exec-path "c:/cygwin64/bin/"))
@@ -342,10 +329,6 @@
 ;; use flycheck for cython-mode
 (require 'flycheck-cython)
 (add-hook 'cython-mode-hook 'flycheck-mode)
-
-;; flycheck-irony config
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ;; config yaml-mode
 (require 'yaml-mode)
@@ -414,6 +397,9 @@
           go-mode
           typescript-mode) . copilot-mode)
   :config
+  ;; Copilot won't complete in buffers over copilot-max-char (100KB); that's
+  ;; expected, so don't warn about it on every large file visit.
+  (setq copilot-max-char-warning-disable t)
   (define-key copilot-mode-map (kbd "C-M-<return>") #'copilot-accept-completion)
   (define-key copilot-mode-map (kbd "C-M-<prior>") #'copilot-previous-completion)
   (define-key copilot-mode-map (kbd "C-M-<next>") #'copilot-next-completion)
@@ -444,20 +430,21 @@
 ;; inlineCompletion:null capability — use typescript-language-server instead.
 (setq lsp-disabled-clients '(tsgo))
 
-;; Disable per-cursor-move features that make large files crawl.
-(setq lsp-enable-symbol-highlighting nil)  ; no document-highlight on every move
-(setq lsp-idle-delay 0.5)                 ; debounce LSP requests
+;; Disable LSP symbol highlighting globally (expensive on every cursor move).
+(setq lsp-enable-symbol-highlighting nil
+      lsp-idle-delay 0.5)
 
-;; Skip LSP and Copilot entirely for large files (over ~500KB).
-(defun my/disable-lsp-for-large-files ()
-  (when (> (buffer-size) 500000)
-    (lsp-mode -1)))
-(add-hook 'lsp-after-open-hook #'my/disable-lsp-for-large-files)
-
-(defun my/disable-copilot-for-large-files ()
-  (when (> (buffer-size) 500000)
-    (copilot-mode -1)))
-(add-hook 'copilot-mode-hook #'my/disable-copilot-for-large-files)
+;; Disable slow minor modes for large files (>100KB). append=t ensures this
+;; runs after smartparens-global-mode's find-file-hook, which would otherwise
+;; re-enable smartparens-mode after we disable it. LSP stays enabled — the
+;; navigation slowness was show-paren's backward-up-list, not LSP.
+(defun my/large-file-performance-mode ()
+  (when (> (buffer-size) 100000)
+    (when (bound-and-true-p flycheck-mode)    (flycheck-mode -1))
+    (when (bound-and-true-p smartparens-mode) (smartparens-mode -1))
+    (when (bound-and-true-p hs-minor-mode)    (hs-minor-mode -1))
+    (setq-local jit-lock-stealth-time nil)))
+(add-hook 'find-file-hook #'my/large-file-performance-mode t)
 (add-hook 'terraform-mode-hook #'lsp)
 
 ;; M-s i (counsel-imenu) uses lsp-mode's imenu symbols in lsp buffers.
@@ -500,8 +487,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (define-key typescript-mode-map (kbd "M-.") nil))
-
-(add-hook 'typescript-mode-hook 'copilot-mode)
 
 (provide 'init-packages)
 ;;; init-package.el ends here

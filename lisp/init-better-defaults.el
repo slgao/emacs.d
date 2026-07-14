@@ -45,11 +45,12 @@
 ;; highlight parenthesis as well if the cursor is surrounded by parenthesises
 ;; src from http://book.emacs-china.org/#orgheadline24
 (define-advice show-paren-function (:around (fn) fix-show-paren-function)
-  "Highlight enclosing parens."
-  (cond ((looking-at-p "\\s(") (funcall fn))
-	(t (save-excursion
-	     (ignore-errors (backward-up-list))
-	     (funcall fn)))))
+  "Highlight enclosing parens, skipping backward-up-list in large files."
+  (cond ((looking-at-p "\\s(")    (funcall fn))
+        ((> (buffer-size) 100000) (funcall fn))
+        (t (save-excursion
+             (ignore-errors (backward-up-list))
+             (funcall fn)))))
 
 ;; activate browse kill ring for unnormal behavior
 (when (require 'browse-kill-ring nil 'noerror)
@@ -199,7 +200,7 @@
 (set-keyboard-coding-system 'utf-8)
 ;; backwards compatibility as default-buffer-file-coding-system
 ;; is deprecated in 23.2.
-(if (boundp buffer-file-coding-system)
+(if (boundp 'buffer-file-coding-system)
     (setq buffer-file-coding-system 'utf-8)
   (setq default-buffer-file-coding-system 'utf-8))
 
@@ -287,17 +288,13 @@
 
 ;; Performance optimizations
 ;; Increase GC threshold during startup
-(setq gc-cons-threshold (* 50 1000 1000))
-;; Reset GC threshold after startup (optional)
+(setq gc-cons-threshold (* 100 1000 1000))
+;; After startup, keep it high — lsp-mode generates lots of garbage and a low
+;; threshold causes constant GC pauses while editing (visible in profiler).
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq gc-cons-threshold (* 2 1000 1000))))
-;; Improve process communication
+            (setq gc-cons-threshold (* 32 1000 1000))))
+;; Improve process communication (lsp-mode reads large JSON payloads)
 (setq read-process-output-max (* 1024 1024))
-;; Smoother redisplay
-(setq redisplay-dont-pause t)
-
-;; column indicator
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 (provide 'init-better-defaults)
