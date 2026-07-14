@@ -44,12 +44,16 @@
 ;; highlight parenthesis as well if the cursor is surrounded by parenthesises
 ;; src from http://book.emacs-china.org/#orgheadline24
 (define-advice show-paren-function (:around (fn) fix-show-paren-function)
-  "Highlight enclosing parens, skipping backward-up-list in large files."
-  (cond ((looking-at-p "\\s(")    (funcall fn))
-        ((> (buffer-size) 100000) (funcall fn))
-        (t (save-excursion
-             (ignore-errors (backward-up-list))
-             (funcall fn)))))
+  "Highlight enclosing parens.
+Find the enclosing open paren from the cached syntax state instead of
+backward-up-list: in python-mode the latter goes through
+python-nav-forward-sexp, costing up to seconds per call in large files."
+  (if (looking-at-p "\\s(")
+      (funcall fn)
+    (save-excursion
+      (let ((open (nth 1 (syntax-ppss))))
+        (when open (goto-char open)))
+      (funcall fn))))
 
 ;; activate browse kill ring for unnormal behavior
 (when (require 'browse-kill-ring nil 'noerror)

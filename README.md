@@ -27,7 +27,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Navigation**: Ivy/Counsel/Swiper fuzzy searching, line numbers in code buffers
 - **Window management**: Ace-window for quick window switching
 - **Multiple cursors**: Edit multiple locations simultaneously
-- **Performance**: GC tuned for lsp-mode; slow minor modes auto-disabled in files >100KB
+- **Performance**: profiler-driven tuning — GC tuned for lsp-mode and suspended during minibuffer input; show-paren finds the enclosing paren via cached syntax state (python-mode's sexp navigation cost up to seconds per idle tick in large files); single hover pipeline (lsp-ui popup, no duplicate eldoc echo); no idle polling for the code-actions modeline; LSP imenu used in python buffers (counsel-imenu hardcodes the slow regex indexer otherwise); slow minor modes auto-disabled in files >100KB
 
 ### Python Development
 - **LSP mode**: Full IDE experience via `pylsp` (goto-definition, completion, diagnostics)

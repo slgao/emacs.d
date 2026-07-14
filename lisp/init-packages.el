@@ -416,9 +416,22 @@
 ;; the lsp-ui sideline already shows code actions (9% CPU in profiling).
 (setq lsp-modeline-code-actions-enable nil)
 
+;; Don't render hover docs in the echo area via eldoc — the lsp-ui doc popup
+;; already shows them; keeping both doubles the hover requests on every idle.
+(setq lsp-eldoc-enable-hover nil)
+
 ;; Don't register filesystem watchers over the whole workspace — a known
 ;; slowdown in large repos, and the servers we use barely rely on them.
 (setq lsp-enable-file-watchers nil)
+
+;; counsel-imenu hardcodes python.el's slow regex-based index for python
+;; buffers, discarding the LSP-provided one. Route it back to the buffer's
+;; imenu function (LSP's) when lsp manages the buffer.
+(define-advice python-imenu-create-flat-index (:around (fn &rest args) prefer-lsp)
+  (if (and (bound-and-true-p lsp-managed-mode)
+           (not (eq imenu-create-index-function #'python-imenu-create-flat-index)))
+      (funcall imenu-create-index-function)
+    (apply fn args)))
 
 ;; Disable slow minor modes for large files (>100KB). append=t ensures this
 ;; runs after smartparens-global-mode's find-file-hook, which would otherwise
