@@ -12,6 +12,10 @@
                           exec-path-from-shell
                           swiper
                           counsel
+                          projectile
+                          counsel-projectile
+                          which-key
+                          diff-hl
                           smartparens
                           pyvenv
                           magit
@@ -387,9 +391,9 @@
 
   (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 
-;; lsp-mode for Terraform-lsp emacs
-;; if you want to change prefix for lsp-mode keybindings.
-(setq lsp-keymap-prefix "s-l")
+;; lsp-mode keybinding prefix. C-c l instead of s-l: the Super key is usually
+;; grabbed by the desktop environment (Super+L locks the screen on GNOME).
+(setq lsp-keymap-prefix "C-c l")
 
 ;; lsp-mode and lsp-ivy load lazily via autoloads on first `lsp' call.
 
@@ -454,6 +458,27 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (define-key typescript-mode-map (kbd "M-.") nil))
+
+;; ---- modern IDE starter set ----
+
+;; which-key: after pressing a prefix (C-c p, C-c l, ...), pop up a panel
+;; showing every binding that continues from it.
+(which-key-mode 1)
+
+;; projectile: project-aware commands under C-c p — fuzzy find file (C-c p f),
+;; switch project (C-c p p), search (C-c p s g), etc. counsel-projectile makes
+;; them use ivy completion.
+(projectile-mode 1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(counsel-projectile-mode 1)
+
+;; diff-hl: VS Code-style git change markers (added/modified/deleted) in the
+;; window fringe, updated live while editing.
+(global-diff-hl-mode 1)
+(diff-hl-flydiff-mode 1)
+(with-eval-after-load 'magit
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (provide 'init-packages)
 ;;; init-package.el ends here
