@@ -21,6 +21,9 @@ Then complete the one-time manual setup steps described below for each language/
 - **Project-wide search**: counsel-rg live grep (`M-s r`, requires ripgrep)
 - **Keybinding discovery**: which-key shows available bindings after any prefix
 - **Version control**: Magit integration plus diff-hl change markers in the fringe
+- **Hover docs & peek**: lsp-ui — documentation popup at point after the cursor rests, peek-style reference view (`M-?`), diagnostics/code actions in the sideline
+- **Debugging**: dap-mode with VS Code debug adapters (`M-x dap-debug`; Python via debugpy, Go via delve)
+- **Terminal**: vterm on `C-c v` (Linux/macOS; falls back to eshell on Windows)
 - **Navigation**: Ivy/Counsel/Swiper fuzzy searching, line numbers in code buffers
 - **Window management**: Ace-window for quick window switching
 - **Multiple cursors**: Edit multiple locations simultaneously
@@ -122,6 +125,8 @@ Then complete the one-time manual setup steps described below for each language/
 - `M-.` - Go to definition (via lsp-mode / xref)
 - `M-,` - Go back after jump
 - `C-c l` - LSP command prefix (rename, code actions, ... — which-key lists them)
+- `M-?` - Peek references (lsp-ui) in LSP buffers
+- `C-c v` - Open terminal (vterm; eshell on Windows)
 - `M-s i` - Browse symbols in current file (counsel-imenu, LSP-enriched)
 - `M-s I` - Search symbols across entire project (lsp-ivy workspace)
 - `C-h C-f` - Find function definition
@@ -198,6 +203,34 @@ npm install -g typescript-language-server typescript
 ```
 
 No further Emacs configuration needed — lsp-mode auto-starts for `.ts` files.
+
+### Terminal (vterm) — Linux/macOS only
+
+vterm compiles a native module on first launch and needs build tools installed:
+
+```bash
+# Linux
+sudo apt install cmake libtool-bin libvterm-dev
+
+# macOS
+brew install cmake libvterm libtool
+```
+
+Not supported on native Windows Emacs — `C-c v` opens eshell there instead.
+
+### Debugging (dap-mode)
+
+For Python, install debugpy in the environment you debug:
+```bash
+pip install debugpy
+```
+
+Go debugging uses delve:
+```bash
+go install github.com/go-delve/delve/cmd/dlv@latest
+```
+
+Start a session with `M-x dap-debug`.
 
 ### Project search (ripgrep)
 
@@ -280,6 +313,8 @@ Run `M-x copilot-install-server` (requires npm).
 - Clang (for C++ development)
 - CMake (for C++ project management)
 - Go 1.18+ with `gopls` (for Go development)
+- cmake + libtool + libvterm (for vterm terminal, Linux/macOS only)
+- debugpy / delve (for interactive debugging via dap-mode)
 
 ## License
 
