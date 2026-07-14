@@ -54,6 +54,8 @@
                           slime-company
                           lsp-mode
                           lsp-ivy
+                          lsp-ui
+                          dap-mode
                           dockerfile-mode
                           jenkinsfile-mode
                           dotenv-mode
@@ -62,6 +64,11 @@
                           go-mode
                           typescript-mode)
   "Default packages")
+
+;; vterm needs a Unix terminal layer and a compiled native module — not
+;; available on native Windows Emacs.
+(unless (eq system-type 'windows-nt)
+  (add-to-list 'shulin/packages 'vterm t))
 
 (defun shulin/packages-installed-p ()
   (cl-every #'package-installed-p shulin/packages))
@@ -405,6 +412,10 @@
 (setq lsp-enable-symbol-highlighting nil
       lsp-idle-delay 0.5)
 
+;; Don't poll for code actions on every idle just for the modeline lightbulb —
+;; the lsp-ui sideline already shows code actions (9% CPU in profiling).
+(setq lsp-modeline-code-actions-enable nil)
+
 ;; Disable slow minor modes for large files (>100KB). append=t ensures this
 ;; runs after smartparens-global-mode's find-file-hook, which would otherwise
 ;; re-enable smartparens-mode after we disable it. LSP stays enabled — the
@@ -422,6 +433,45 @@
 ;; M-s I searches symbols project-wide across all workspace files.
 (with-eval-after-load 'lsp-mode
   (define-key lsp-mode-map (kbd "M-s I") #'lsp-ivy-workspace-symbol))
+
+;; lsp-ui: hover docs, peek references, sideline. Configured conservatively so
+;; it doesn't tax cursor movement (see the typing.py history): docs and
+;; sideline render only after the cursor rests, and hover info is off in the
+;; sideline (diagnostics and code actions still show).
+(with-eval-after-load 'lsp-mode
+  (require 'lsp-ui)
+  (setq lsp-ui-doc-show-with-cursor t
+        lsp-ui-doc-delay 0.8
+        lsp-ui-doc-position 'at-point
+        lsp-ui-sideline-delay 0.5
+        lsp-ui-sideline-show-hover nil
+        lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-code-actions t)
+  ;; doc popup appearance: symbol header + type signature, gruvbox colors,
+  ;; subtle border, capped size so it never covers the whole window
+  (setq lsp-ui-doc-header t
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-max-width 82
+        lsp-ui-doc-max-height 18
+        lsp-ui-doc-border "#928374")
+  (set-face-attribute 'lsp-ui-doc-background nil :background "#32302f")
+  (set-face-attribute 'lsp-ui-doc-header nil
+                      :background "#458588" :foreground "#ebdbb2" :weight 'bold)
+  ;; peek views instead of plain xref buffers
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
+
+;; dap-mode: interactive debugging via VS Code debug adapters. Loads lazily on
+;; first M-x dap-debug. Python needs `pip install debugpy', Go uses delve.
+(with-eval-after-load 'dap-mode
+  (require 'dap-python)
+  (require 'dap-dlv-go)
+  (dap-auto-configure-mode 1))
+
+;; vterm: real terminal emulator (compiles a native module on first launch;
+;; needs cmake and libtool/libvterm installed). Unsupported on native Windows
+;; Emacs, where C-c v falls back to the built-in eshell.
+(global-set-key (kbd "C-c v")
+                (if (eq system-type 'windows-nt) 'eshell 'vterm))
 
 ;; Open the current buffer's directory in the OS file manager.
 (defun open-in-file-manager ()
