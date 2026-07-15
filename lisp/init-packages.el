@@ -482,6 +482,9 @@
 (with-eval-after-load 'dap-mode
   (require 'dap-python)
   (require 'dap-dlv-go)
+  ;; dap-python defaults to the deprecated ptvsd adapter, which crashes on
+  ;; modern Python (stack requests fail); debugpy is its maintained successor
+  (setq dap-python-debugger 'debugpy)
   (dap-auto-configure-mode 1)
   ;; mouse support: hover a variable during a session to see its value
   (dap-tooltip-mode 1)
