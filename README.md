@@ -22,7 +22,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Keybinding discovery**: which-key shows available bindings after any prefix
 - **Version control**: Magit integration plus diff-hl change markers in the fringe
 - **Hover docs & peek**: lsp-ui — documentation popup at point after the cursor rests, peek-style reference view (`M-?`), diagnostics/code actions in the sideline
-- **Debugging**: dap-mode with VS Code debug adapters (`M-x dap-debug`; Python via debugpy, Go via delve)
+- **Debugging**: dap-mode with VS Code debug adapters (`M-x dap-debug`; Python via debugpy, Go via delve) — click the left fringe to toggle breakpoints, hover variables for their values, `M-x dap-hydra` for stepping keys
 - **Terminal**: vterm on `C-c v` (Linux/macOS; falls back to eshell on Windows)
 - **Navigation**: Ivy/Counsel/Swiper fuzzy searching, line numbers in code buffers
 - **Window management**: Ace-window for quick window switching
@@ -220,9 +220,15 @@ Not supported on native Windows Emacs — `C-c v` opens eshell there instead.
 
 ### Debugging (dap-mode)
 
-For Python, install debugpy in the environment you debug:
+Python debugging uses debugpy (the config sets `dap-python-debugger` to
+`debugpy`; dap-mode's default, ptvsd, is deprecated and crashes on modern
+Python). Install it **into each environment you debug** — a project venv does
+not see packages installed elsewhere:
+
 ```bash
-pip install debugpy
+pip install debugpy                        # active env / system python
+# or, for a specific project venv:
+path/to/project/venv/bin/pip install debugpy
 ```
 
 Go debugging uses delve:
@@ -230,7 +236,14 @@ Go debugging uses delve:
 go install github.com/go-delve/delve/cmd/dlv@latest
 ```
 
-Start a session with `M-x dap-debug`.
+To debug a Python file:
+1. Activate the right environment with `M-x pyvenv-activate` (dap runs the
+   file with that env's python — check the first line of the dap-server-log
+   buffer if imports look wrong)
+2. Set breakpoints by clicking the left fringe (or `M-x dap-breakpoint-toggle`)
+3. `M-x dap-debug` → "Python :: Run file (buffer)"
+4. Step with the on-screen toolbar or `M-x dap-hydra` (`c` continue,
+   `n` next, `i` step in, `q` quit); hover a variable to see its value
 
 ### Project search (ripgrep)
 
