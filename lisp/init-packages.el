@@ -482,7 +482,19 @@
 (with-eval-after-load 'dap-mode
   (require 'dap-python)
   (require 'dap-dlv-go)
-  (dap-auto-configure-mode 1))
+  (dap-auto-configure-mode 1)
+  ;; mouse support: hover a variable during a session to see its value
+  (dap-tooltip-mode 1)
+  (tooltip-mode 1))
+
+;; VS Code-style: click the left fringe to toggle a breakpoint on that line
+(defun my/dap-mouse-toggle-breakpoint (event)
+  "Toggle a dap breakpoint on the line whose fringe was clicked."
+  (interactive "e")
+  (save-excursion
+    (mouse-set-point event)
+    (dap-breakpoint-toggle)))
+(global-set-key [left-fringe mouse-1] #'my/dap-mouse-toggle-breakpoint)
 
 ;; vterm: real terminal emulator (compiles a native module on first launch;
 ;; needs cmake and libtool/libvterm installed). Unsupported on native Windows
