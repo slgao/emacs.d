@@ -361,9 +361,13 @@ the original \"no definitions\" error instead of citre's internals."
   ;; builds ABI 15, which Emacs 29 rejects with version-mismatch. Fill in the
   ;; last ABI-14 tag so every Emacs-29 machine builds a working grammar;
   ;; newer Emacsen keep using master automatically.
+  ;; aset instead of setf: the struct accessor's setf expander isn't
+  ;; available at runtime in interpreted config code
   (dolist (recipe treesit-auto-recipe-list)
     (when (eq (treesit-auto-recipe-lang recipe) 'c)
-      (setf (treesit-auto-recipe-abi14-revision recipe) "v0.20.7")))
+      (aset recipe
+            (cl-struct-slot-offset 'treesit-auto-recipe 'abi14-revision)
+            "v0.20.7")))
   (global-treesit-auto-mode))
 
 ;; iedit and multiple-cursors: commands are autoloaded, bound in init-keybindings
