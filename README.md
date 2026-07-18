@@ -44,10 +44,11 @@ Then complete the one-time manual setup steps described below for each language/
 - **Flycheck-irony**: Real-time syntax checking
 - **Helm-gtags**: Code navigation and symbol lookup
 
-### TypeScript/JavaScript Development
-- **LSP mode**: via `typescript-language-server` for `.ts` files (tsgo is disabled for compatibility)
+### TypeScript/JavaScript/Web Development
+- **LSP mode**: via `typescript-language-server` for `.ts`/`.tsx` files (tsgo is disabled for compatibility)
 - **js2-mode**: for `.js`/`.mjs` files with xref navigation
 - **web-mode**: for `.tsx`/`.jsx` and HTML templates
+- **HTML LSP**: `html-ls` starts automatically in `.html` buffers (completion, hover, in-document xref, `M-s i` symbols)
 
 ### AI Assistance
 - **GitHub Copilot**: Inline completions in Python, C/C++, Go, TypeScript, shell, YAML, and Terraform
@@ -203,6 +204,18 @@ npm install -g typescript-language-server typescript
 ```
 
 No further Emacs configuration needed — lsp-mode auto-starts for `.ts` files.
+
+### HTML (lsp-mode)
+
+No manual install needed — the first time you open an `.html` file, lsp-mode
+offers to download the server (`html-ls`, from the `vscode-langservers-extracted`
+npm package). Confirm the prompt and it installs per-user into
+`~/.emacs.d/.cache/lsp/` (no sudo; requires npm). Pick `html-ls` if several
+servers are offered — `eslint` only matters in projects with an ESLint config,
+and `emmet-ls` is redundant with the built-in emmet-mode.
+
+The same download mechanism works for most languages: `M-x lsp-install-server`
+installs any supported server, `M-x lsp-update-server` upgrades it later.
 
 ### Terminal (vterm) — Linux/macOS only
 

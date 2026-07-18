@@ -208,6 +208,15 @@
   (setq web-mode-code-indent-offset 2)   ; web-mode, js code in html file
   )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+;; LSP in web-mode, but only for file types with an installed server: html
+;; (vscode-html-language-server, npm i -g vscode-langservers-extracted) and
+;; tsx (typescript-language-server). Unguarded, lsp would prompt to install
+;; a server for every template flavor web-mode handles (.erb, .mustache, ...).
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (and buffer-file-name
+                       (string-match-p "\\.\\(html?\\|tsx\\)\\'" buffer-file-name))
+              (lsp))))
 
 ;; switch between 2 and 4 space indents
 (defun my-toggle-web-indent ()
