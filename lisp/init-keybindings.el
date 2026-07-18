@@ -83,14 +83,7 @@
 (with-eval-after-load 'yasnippet
   (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand))
 
-;; key bindings for helm-gtags
-(with-eval-after-load 'helm-gtags
-  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
-  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
-  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
-  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
+;; helm-gtags keybindings removed — C/C++ uses lsp-mode (M-. / M-, / M-?)
 
 ;; jedi keybindings disabled; lsp-mode handles M-. via xref in python-mode
 ;; (eval-after-load 'jedi

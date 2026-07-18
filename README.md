@@ -37,12 +37,9 @@ Then complete the one-time manual setup steps described below for each language/
 - **Linting**: Flake8 integration via Flycheck
 
 ### C/C++ Development
-- **Irony mode**: Clang-based completion and syntax checking
-- **Company-irony**: Intelligent auto-completion
+- **LSP mode**: Full IDE experience via `clangd` (completion, diagnostics, goto-definition, references) — same workflow as Python/Go/TS
 - **CMake support**: CMake mode for build configuration
 - **Code formatting**: Clang-format integration
-- **Flycheck-irony**: Real-time syntax checking
-- **Helm-gtags**: Code navigation and symbol lookup
 
 ### TypeScript/JavaScript/Web Development
 - **LSP mode**: via `typescript-language-server` for `.ts`/`.tsx` files (tsgo is disabled for compatibility)
@@ -182,19 +179,29 @@ M-x copilot-login
 
 Follow the device-auth prompt: copy the code shown in the minibuffer, open the URL in a browser, and paste the code. Copilot will activate automatically after login.
 
-### C/C++ (irony + clang)
+### C/C++ (lsp-mode via clangd)
+
+No manual install strictly needed — on the first C/C++ file, lsp-mode offers
+to download clangd automatically (per-user, into `~/.emacs.d/.cache/lsp/`).
+Alternatively install it system-wide:
 
 ```bash
 # Linux
-sudo apt-get install clang cmake
+sudo apt install clangd
 
-# macOS
-brew install llvm cmake
+# macOS (clangd ships with Xcode command line tools)
+xcode-select --install
+
+# Windows
+winget install LLVM.LLVM
 ```
 
-Inside Emacs, run once per project:
-```
-M-x irony-install-server
+For project-wide completion/navigation, generate `compile_commands.json` at
+the project root:
+
+```bash
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ...   # CMake projects
+bear -- make                                    # Make projects
 ```
 
 ### TypeScript (lsp-mode)
@@ -326,8 +333,9 @@ Run `M-x copilot-install-server` (requires npm).
 - Check LSP server status: `M-x lsp-describe-session`
 
 ### C++ Issues
-- Ensure clang is installed and accessible
+- Check the LSP session: `M-x lsp-describe-session` (should show `clangd`)
 - Provide `compile_commands.json` (via CMake with `CMAKE_EXPORT_COMPILE_COMMANDS=ON`)
+- If clangd is missing, `M-x lsp-install-server` → clangd downloads it
 
 ## Requirements
 
@@ -336,7 +344,7 @@ Run `M-x copilot-install-server` (requires npm).
 - ripgrep (for project-wide search, `M-s r`)
 - Python 3.6+ with pip
 - Node.js 18+ and npm (for Copilot and typescript-language-server)
-- Clang (for C++ development)
+- clangd (for C++ development; lsp-mode can auto-download it)
 - CMake (for C++ project management)
 - Go 1.18+ with `gopls` (for Go development)
 - cmake + libtool + libvterm (for vterm terminal, Linux/macOS only)

@@ -36,20 +36,15 @@
                           multiple-cursors
                           sphinx-doc
                           clang-format
-                          helm
-                          helm-gtags
-                          irony
                           cmake-mode
                           cython-mode
                           flycheck-cython
-                          flycheck-irony
-                          company-irony
-                          company-irony-c-headers
                           use-package
                           yaml-mode
                           yasnippet
                           yasnippet-snippets
                           htmlize
+                          copilot
                           slime
                           slime-company
                           lsp-mode
@@ -143,21 +138,15 @@
 ;; (add-hook 'python-mode-hook 'company-backends/python-mode-hook)
 ;; (setq elpy-rpc-backend "jedi")
 
-;; config irony mode
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-;; set company backend to company irony
-(defun company-backends/c++-mode-hook()
-  (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
-(add-hook 'irony-mode-hook 'company-backends/c++-mode-hook)
-
-;; start flycheck-irony when irony mode is activated
-(add-hook 'irony-mode-hook 'flycheck-mode)
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+;; C/C++ via lsp-mode + clangd (replaces the old irony/helm-gtags stack).
+;; lsp-mode offers to download clangd on first use if none is installed.
+;; For project-wide awareness provide compile_commands.json at the project
+;; root (cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON, or bear for make).
+;; Completion, diagnostics (flycheck via lsp), M-., M-? all work like the
+;; python/go/ts setups.
+(add-hook 'c-mode-hook #'lsp)
+(add-hook 'c++-mode-hook #'lsp)
+(add-hook 'objc-mode-hook #'lsp)
 
 ;; config flycheck -- comment to disable flycheck, slow in python mode
 ;; (when (require 'flycheck nil t)
