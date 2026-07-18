@@ -49,8 +49,8 @@
 ;; kbd for magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
-;; kbd to toggle neotree
-(global-set-key [f8] 'neotree-toggle)
+;; kbd to toggle the treemacs project sidebar
+(global-set-key [f8] 'treemacs)
 
 ;; config for expand-region
 ;; the original recommended kbd "C-=" somehow does not take effect

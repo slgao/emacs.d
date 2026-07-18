@@ -27,8 +27,8 @@
                           web-mode
                           ace-window
                           undo-tree
-                          neotree
-                          all-the-icons
+                          treemacs
+                          treesit-auto
                           js2-refactor
                           xref-js2
                           expand-region
@@ -145,9 +145,12 @@
 ;; root (cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON, or bear for make).
 ;; Completion, diagnostics (flycheck via lsp), M-., M-? all work like the
 ;; python/go/ts setups.
-(add-hook 'c-mode-hook #'lsp)
-(add-hook 'c++-mode-hook #'lsp)
-(add-hook 'objc-mode-hook #'lsp)
+(dolist (hook '(c-mode-hook c++-mode-hook objc-mode-hook
+                c-ts-mode-hook c++-ts-mode-hook))
+  (add-hook hook #'lsp))
+;; .ts/.tsx tree-sitter modes (classic .ts uses the typescript-mode hook below)
+(add-hook 'typescript-ts-mode-hook #'lsp)
+(add-hook 'tsx-ts-mode-hook #'lsp)
 
 ;; One-command compile_commands.json pipeline for CMake projects: configure
 ;; into <root>/build with the compilation database enabled and link the db
@@ -211,8 +214,8 @@ so clangd picks the database up."
       (push root my/compile-db-hinted)
       (message "No compile_commands.json in %s — M-x my/cmake-generate-compile-db gives clangd full project awareness"
                (abbreviate-file-name root)))))
-(add-hook 'c-mode-hook #'my/cpp-compile-db-hint)
-(add-hook 'c++-mode-hook #'my/cpp-compile-db-hint)
+(dolist (hook '(c-mode-hook c++-mode-hook c-ts-mode-hook c++-ts-mode-hook))
+  (add-hook hook #'my/cpp-compile-db-hint))
 
 ;; citre: indexed navigation on ctags / GNU Global databases — the modern
 ;; replacement for the old helm-gtags workflow (same gtags engine, no helm).
@@ -333,11 +336,26 @@ the original \"no definitions\" error instead of citre's internals."
 (setq undo-tree-auto-save-history nil)
 (global-undo-tree-mode)
 
-;; add neotree mode
-(setq neo-smart-open t)
-;; the fonts in all-the-icons packages should be installed if icons neo-theme is used
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+;; treemacs: project tree sidebar (replaces neotree), on F8. Loads lazily.
+(with-eval-after-load 'treemacs
+  (treemacs-follow-mode 1)      ; keep the tree in sync with the current file
+  (treemacs-filewatch-mode 1))  ; auto-refresh on external file changes
 (setq inhibit-compacting-font-caches t)
+
+;; tree-sitter major modes (built into Emacs 29+): faster, structurally
+;; accurate highlighting — noticeable in large files. treesit-auto remaps a
+;; buffer to the -ts- mode only when that language's grammar is installed,
+;; and offers to build missing grammars (needs git + a C compiler; machines
+;; without them just stay on the classic modes). go and javascript are
+;; deliberately excluded: their classic-mode workflows (gofmt-on-save,
+;; js2-refactor/xref-js2) don't carry over to the ts modes.
+(use-package treesit-auto
+  :ensure t
+  :config
+  (setq treesit-auto-install 'prompt)
+  (setq treesit-auto-langs
+        '(python c cpp typescript tsx json yaml bash cmake dockerfile toml))
+  (global-treesit-auto-mode))
 
 ;; iedit and multiple-cursors: commands are autoloaded, bound in init-keybindings
 
@@ -392,10 +410,11 @@ the original \"no definitions\" error instead of citre's internals."
 (add-hook 'prog-mode-hook #'yas-minor-mode)
 (with-eval-after-load 'yasnippet (yas-reload-all))
 
-;; sphinx-doc mode config
-(add-hook 'python-mode-hook (lambda ()
-			      (require 'sphinx-doc)
-			      (sphinx-doc-mode t)))
+;; sphinx-doc mode config (classic and tree-sitter python)
+(dolist (hook '(python-mode-hook python-ts-mode-hook))
+  (add-hook hook (lambda ()
+                   (require 'sphinx-doc)
+                   (sphinx-doc-mode t))))
 
 ;; clang-format config (commands are autoloaded)
 (global-set-key (kbd "C-c i") 'clang-format-region)
@@ -454,7 +473,7 @@ the original \"no definitions\" error instead of citre's internals."
 ;; activated last and pylsp resolves imports against the wrong site-packages.
 (add-hook 'hack-local-variables-hook
           (lambda ()
-            (when (derived-mode-p 'python-mode)
+            (when (derived-mode-p 'python-mode 'python-ts-mode)
               (pyvenv-mode 1)          ; autoloaded; loads pyvenv on first use
               (let (venv)
                 (locate-dominating-file
@@ -478,13 +497,20 @@ the original \"no definitions\" error instead of citre's internals."
 (use-package copilot
   :ensure t
   :hook ((python-mode
+          python-ts-mode
           sh-mode
+          bash-ts-mode
           c-mode
+          c-ts-mode
           c++-mode
+          c++-ts-mode
           yaml-mode
+          yaml-ts-mode
           terraform-mode
           go-mode
-          typescript-mode) . copilot-mode)
+          typescript-mode
+          typescript-ts-mode
+          tsx-ts-mode) . copilot-mode)
   :config
   ;; Copilot won't complete in buffers over copilot-max-char (100KB); that's
   ;; expected, so don't warn about it on every large file visit.

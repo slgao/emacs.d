@@ -25,6 +25,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Debugging**: dap-mode with VS Code debug adapters (`M-x dap-debug`; Python via debugpy, Go via delve) — click the left fringe to toggle breakpoints, hover variables for their values, `M-x dap-hydra` for stepping keys
 - **Terminal**: vterm on `C-c v` (Linux/macOS; falls back to eshell on Windows)
 - **Navigation**: Ivy/Counsel/Swiper fuzzy searching, line numbers in code buffers
+- **Tree-sitter syntax**: python/C/C++/TS/TSX/json/yaml/bash/cmake/dockerfile/toml buffers use Emacs 29's built-in tree-sitter modes — incremental, structurally accurate highlighting that stays fast in large files. On first use per machine, treesit-auto offers to compile the language grammars (needs git + a C compiler); machines without them simply keep the classic modes
 - **Indexed jump fallback**: citre (ctags/GNU Global) backs up `M-.` — used automatically when a buffer has no LSP, or when the LSP server has no answer (e.g. a C++ tree without `compile_commands.json`). Build the index once with `gtags` at the project root
 - **Window management**: Ace-window for quick window switching
 - **Multiple cursors**: Edit multiple locations simultaneously
@@ -73,7 +74,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Snippet expansion**: YASnippet support
 - **Kill ring browser**: Enhanced clipboard management
 - **Undo tree**: Visual undo/redo system
-- **Neotree**: File tree sidebar with icons
+- **Treemacs**: Project tree sidebar (`F8`), follows the current file
 
 ## Configuration Structure
 
@@ -369,6 +370,7 @@ Run `M-x copilot-install-server` (requires npm).
 - Git
 - ripgrep (for project-wide search, `M-s r`)
 - GNU Global + ctags (optional — powers the citre `M-.` fallback index for code trees without LSP coverage)
+- git + C compiler (optional — used once per machine to build tree-sitter grammars; without them classic major modes are used)
 - Python 3.6+ with pip
 - Node.js 18+ and npm (for Copilot and typescript-language-server)
 - clangd (for C++ development; lsp-mode can auto-download it)
