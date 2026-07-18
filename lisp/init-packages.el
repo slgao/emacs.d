@@ -350,15 +350,20 @@
 ;; (add-hook 'c++-mode-hook #'lsp)
 
 ;; Start LSP after dir-locals are applied. Auto-detect a venv named venv/ or
-;; .venv/ at the project root so no .dir-locals.el is needed per project.
+;; .venv/ by searching upward from the file itself, so it also works in plain
+;; folders that are not git repos. Without this, pyvenv keeps whatever env was
+;; activated last and pylsp resolves imports against the wrong site-packages.
 (add-hook 'hack-local-variables-hook
           (lambda ()
             (when (derived-mode-p 'python-mode)
-              (let* ((root (locate-dominating-file default-directory ".git"))
-                     (venv (when root
-                             (seq-find #'file-directory-p
-                                       (mapcar (lambda (name) (expand-file-name name root))
-                                               '("venv" ".venv"))))))
+              (let (venv)
+                (locate-dominating-file
+                 default-directory
+                 (lambda (dir)
+                   (setq venv (seq-find #'file-directory-p
+                                        (mapcar (lambda (name)
+                                                  (expand-file-name name dir))
+                                                '("venv" ".venv"))))))
                 (when venv (pyvenv-activate venv)))
               (lsp))))
 
