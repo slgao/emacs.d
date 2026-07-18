@@ -102,8 +102,23 @@
 ;; ~/.local/bin tools are visible to Emacs. Use a non-interactive login shell:
 ;; starting an interactive shell just to read $PATH slows down startup.
 (setq exec-path-from-shell-arguments '("-l"))
-(when (memq window-system '(mac ns x))
+(when (memq window-system '(mac ns x pgtk))  ; pgtk = Wayland-native Emacs
   (exec-path-from-shell-initialize))
+
+;; nvm only adds its bin dir to PATH in *interactive* shells, so GUI Emacs
+;; (even with exec-path-from-shell) misses node/npm/typescript-language-server.
+;; Add the newest installed node version's bin dir explicitly. Covers both
+;; nvm.fish (~/.local/share/nvm) and standard nvm (~/.nvm/versions/node).
+(dolist (nvm-root '("~/.local/share/nvm" "~/.nvm/versions/node"))
+  (let* ((dir (expand-file-name nvm-root))
+         (versions (and (file-directory-p dir)
+                        (directory-files dir t "\\`v[0-9]")))
+         (bin (and versions
+                   (expand-file-name
+                    "bin" (car (last (sort versions #'string-version-lessp)))))))
+    (when (and bin (file-directory-p bin))
+      (add-to-list 'exec-path bin)
+      (setenv "PATH" (concat bin path-separator (getenv "PATH"))))))
 
 ;; config swiper
 (ivy-mode 1)
@@ -584,7 +599,13 @@ the original \"no definitions\" error instead of citre's internals."
 
 ;; tsgo (@typescript/native-preview) is incompatible with lsp-mode's
 ;; inlineCompletion:null capability — use typescript-language-server instead.
-(setq lsp-disabled-clients '(tsgo))
+;; tsgo: rejects lsp-mode's handshake. deno-ls: also claims TypeScript
+;; buffers and once auto-installed its binary into .cache/lsp, it hijacks
+;; them whenever typescript-language-server isn't on exec-path — but it
+;; can't navigate pnpm/tsserver projects. For actual Deno projects,
+;; re-enable per-project via .dir-locals.el:
+;;   ((typescript-ts-mode . ((lsp-enabled-clients . (deno-ls)))))
+(setq lsp-disabled-clients '(tsgo deno-ls))
 
 ;; Disable LSP symbol highlighting globally (expensive on every cursor move).
 (setq lsp-enable-symbol-highlighting nil
