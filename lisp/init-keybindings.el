@@ -49,8 +49,9 @@
 ;; kbd for magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
-;; kbd to toggle the treemacs project sidebar
-(global-set-key [f8] 'treemacs)
+;; kbd to toggle the treemacs project sidebar (adds the current project to
+;; the tree first if it isn't there yet)
+(global-set-key [f8] 'my/treemacs-toggle)
 
 ;; config for expand-region
 ;; the original recommended kbd "C-=" somehow does not take effect

@@ -342,7 +342,32 @@ the original \"no definitions\" error instead of citre's internals."
   (treemacs-filewatch-mode 1)   ; auto-refresh on external file changes
   ;; include the treemacs window in the normal C-x o / ace-window rotation
   ;; (by default it sets no-other-window and can only be entered via F8)
-  (setq treemacs-is-never-other-window nil))
+  (setq treemacs-is-never-other-window nil)
+  ;; treemacs also adds itself to ace-window's ignore list — undo that too,
+  ;; or C-x o (ace-window) still refuses to enter the tree
+  (with-eval-after-load 'ace-window
+    (setq aw-ignored-buffers (delq 'treemacs-mode aw-ignored-buffers))))
+
+;; F8, neotree-style: treemacs shows its *workspace* (projects added to it),
+;; not automatically the current file's folder. Bridge the gap: if the file's
+;; project isn't in the workspace yet, add and display it; otherwise plain
+;; treemacs toggle (hidden->show, unfocused->focus, focused->hide).
+(defun my/treemacs-toggle ()
+  "Toggle treemacs, first making sure the current project is in the tree."
+  (interactive)
+  (require 'treemacs)
+  (let ((file (and buffer-file-name (expand-file-name buffer-file-name))))
+    (if (and file (not (treemacs-is-path file :in-workspace)))
+        (let ((root (or (treemacs--find-current-user-project)
+                        (file-name-directory file))))
+          ;; a $HOME "project" means detection degenerated (~ itself is a git
+          ;; repo here): it would overlap every other project and treemacs
+          ;; refuses it — fall back to the file's own directory
+          (when (file-equal-p root (expand-file-name "~"))
+            (setq root (file-name-directory file)))
+          (treemacs-add-project-to-workspace root)
+          (treemacs-select-window))
+      (treemacs))))
 (setq inhibit-compacting-font-caches t)
 
 ;; tree-sitter major modes (built into Emacs 29+): faster, structurally
