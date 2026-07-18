@@ -44,6 +44,7 @@
                           yasnippet
                           yasnippet-snippets
                           htmlize
+                          citre
                           copilot
                           slime
                           slime-company
@@ -147,6 +148,98 @@
 (add-hook 'c-mode-hook #'lsp)
 (add-hook 'c++-mode-hook #'lsp)
 (add-hook 'objc-mode-hook #'lsp)
+
+;; One-command compile_commands.json pipeline for CMake projects: configure
+;; into <root>/build with the compilation database enabled and link the db
+;; to the project root, where clangd looks for it.
+(defun my/cmake-project-root ()
+  "Topmost directory above the current file that has a CMakeLists.txt."
+  (let ((dir (locate-dominating-file default-directory "CMakeLists.txt"))
+        top)
+    (while dir
+      (setq top dir
+            dir (locate-dominating-file
+                 (file-name-directory (directory-file-name dir))
+                 "CMakeLists.txt")))
+    top))
+
+(defun my/cmake-generate-compile-db ()
+  "Generate compile_commands.json for the current CMake project.
+Cross-platform: uses Ninja only when available (the Visual Studio generator
+ignores CMAKE_EXPORT_COMPILE_COMMANDS, so ninja is recommended on Windows),
+and publishes the database to the project root with a symlink on Unix or a
+copy on Windows. When the configure finishes, run M-x lsp-workspace-restart
+so clangd picks the database up."
+  (interactive)
+  (unless (executable-find "cmake")
+    (user-error "cmake not found — install it first (Linux: apt install cmake | macOS: brew install cmake | Windows: winget install Kitware.CMake)"))
+  ;; without ninja, Windows' default Visual Studio generator silently ignores
+  ;; CMAKE_EXPORT_COMPILE_COMMANDS — fail fast instead of after a configure
+  (when (and (eq system-type 'windows-nt) (not (executable-find "ninja")))
+    (user-error "ninja not found — required on Windows to export compile_commands.json (winget install Ninja-build.Ninja)"))
+  (let* ((root (or (my/cmake-project-root)
+                   (user-error "No CMakeLists.txt found above %s"
+                               default-directory)))
+         (default-directory root)
+         (buf (compilation-start
+               (concat "cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                       (if (executable-find "ninja") " -G Ninja" "")))))
+    (with-current-buffer buf
+      (add-hook 'compilation-finish-functions
+                (lambda (_buf status)
+                  (let ((db  (expand-file-name "build/compile_commands.json" root))
+                        (dst (expand-file-name "compile_commands.json" root)))
+                    (cond
+                     ((not (string-match-p "finished" status))
+                      (message "cmake configure failed — see the compilation buffer"))
+                     ((not (file-exists-p db))
+                      (message "configure ok, but the generator produced no compile_commands.json — install ninja and retry"))
+                     (t
+                      (when (file-exists-p dst) (delete-file dst))
+                      (if (eq system-type 'windows-nt)
+                          (copy-file db dst t)   ; symlinks need privileges on Windows
+                        (make-symbolic-link "build/compile_commands.json" dst t))
+                      (message "compile_commands.json ready — M-x lsp-workspace-restart to reload clangd")))))
+                nil t))))
+
+;; Hint (once per project) when a CMake C/C++ tree has no compilation database
+(defvar my/compile-db-hinted nil)
+(defun my/cpp-compile-db-hint ()
+  (when-let* ((root (my/cmake-project-root)))
+    (unless (or (file-exists-p (expand-file-name "compile_commands.json" root))
+                (member root my/compile-db-hinted))
+      (push root my/compile-db-hinted)
+      (message "No compile_commands.json in %s — M-x my/cmake-generate-compile-db gives clangd full project awareness"
+               (abbreviate-file-name root)))))
+(add-hook 'c-mode-hook #'my/cpp-compile-db-hint)
+(add-hook 'c++-mode-hook #'my/cpp-compile-db-hint)
+
+;; citre: indexed navigation on ctags / GNU Global databases — the modern
+;; replacement for the old helm-gtags workflow (same gtags engine, no helm).
+;; It backs up M-. in two situations:
+;; 1. buffers without LSP: citre is the xref backend, so no tags-table prompt
+;; 2. LSP buffers where the server has no answer (e.g. clangd in a tree
+;;    without compile_commands.json): M-. transparently retries on the index
+;; Build the index once per tree: `gtags' at the project root (or
+;; M-x citre-global-create-database); update it with `global -u'.
+(autoload 'citre-xref-backend "citre")
+(setq citre-find-definition-backends '(tags global)
+      citre-find-reference-backends '(global))
+(add-hook 'xref-backend-functions #'citre-xref-backend)
+(define-advice xref-find-definitions (:around (fn &rest args) citre-fallback)
+  "Retry the lookup on the citre index when the active backend finds nothing.
+If citre itself fails too (no index, index being rebuilt, ...), re-signal
+the original \"no definitions\" error instead of citre's internals."
+  (condition-case err
+      (apply fn args)
+    (user-error
+     (require 'citre)
+     (condition-case nil
+         (let ((xref-backend-functions '(citre-xref-backend)))
+           (prog1 (apply fn args)
+             ;; make the fallback visible so it's clear which backend answered
+             (message "LSP had no answer — jumped via the citre index")))
+       (error (signal (car err) (cdr err)))))))
 
 ;; config flycheck -- comment to disable flycheck, slow in python mode
 ;; (when (require 'flycheck nil t)

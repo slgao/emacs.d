@@ -25,6 +25,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Debugging**: dap-mode with VS Code debug adapters (`M-x dap-debug`; Python via debugpy, Go via delve) — click the left fringe to toggle breakpoints, hover variables for their values, `M-x dap-hydra` for stepping keys
 - **Terminal**: vterm on `C-c v` (Linux/macOS; falls back to eshell on Windows)
 - **Navigation**: Ivy/Counsel/Swiper fuzzy searching, line numbers in code buffers
+- **Indexed jump fallback**: citre (ctags/GNU Global) backs up `M-.` — used automatically when a buffer has no LSP, or when the LSP server has no answer (e.g. a C++ tree without `compile_commands.json`). Build the index once with `gtags` at the project root
 - **Window management**: Ace-window for quick window switching
 - **Multiple cursors**: Edit multiple locations simultaneously
 - **Performance**: profiler-driven tuning — GC tuned for lsp-mode and suspended during minibuffer input; show-paren finds the enclosing paren via cached syntax state (python-mode's sexp navigation cost up to seconds per idle tick in large files); single hover pipeline (lsp-ui popup, no duplicate eldoc echo); no idle polling for the code-actions modeline; LSP imenu used in python buffers (counsel-imenu hardcodes the slow regex indexer otherwise); slow minor modes auto-disabled in files >100KB
@@ -120,7 +121,7 @@ Then complete the one-time manual setup steps described below for each language/
 - `M-s r` - Live grep across project (counsel-rg, needs ripgrep)
 
 ### Development
-- `M-.` - Go to definition (via lsp-mode / xref)
+- `M-.` - Go to definition (lsp-mode / xref; falls back to the citre tags index when LSP has no answer)
 - `M-,` - Go back after jump
 - `C-c l` - LSP command prefix (rename, code actions, ... — which-key lists them)
 - `M-?` - Peek references (lsp-ui) in LSP buffers
@@ -196,13 +197,33 @@ xcode-select --install
 winget install LLVM.LLVM
 ```
 
-For project-wide completion/navigation, generate `compile_commands.json` at
-the project root:
+For project-wide completion/navigation clangd needs `compile_commands.json`.
+In any CMake project just run:
+
+```
+M-x my/cmake-generate-compile-db
+```
+
+It configures the project into `<root>/build` with the database enabled and
+publishes it at the project root (symlink on Linux/macOS, copy on Windows),
+then `M-x lsp-workspace-restart` loads it. Opening a C/C++ file in a CMake
+project without a database shows a one-time hint with this command. Ninja is
+used when available and is required on Windows (the Visual Studio generator
+cannot export the database); missing tools are reported immediately with the
+per-OS install command.
+
+For non-CMake projects generate the database manually:
 
 ```bash
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ...   # CMake projects
-bear -- make                                    # Make projects
+bear -- make          # Make projects (needs bear)
 ```
+
+Without a database, `M-.` still works through the citre index fallback (see
+below): after a jump the echo area shows which backend answered — silence
+means clangd, "jumped via the citre index" means the tags fallback.
+
+To build the fallback index for a tree you only want to browse (needs GNU
+Global): run `gtags` at the project root, or `M-x citre-global-create-database`.
 
 ### TypeScript (lsp-mode)
 
@@ -336,12 +357,18 @@ Run `M-x copilot-install-server` (requires npm).
 - Check the LSP session: `M-x lsp-describe-session` (should show `clangd`)
 - Provide `compile_commands.json` (via CMake with `CMAKE_EXPORT_COMPILE_COMMANDS=ON`)
 - If clangd is missing, `M-x lsp-install-server` → clangd downloads it
+- Without `compile_commands.json`, clangd can't resolve includes; `M-.`
+  then falls back to the citre index — run `gtags` once at the project root
+  (needs GNU Global installed) and jumps are instant, like the old
+  helm-gtags workflow. Generate the compilation database for full semantic
+  navigation (hover, references, precise overloads)
 
 ## Requirements
 
 - Emacs 27+ (29+ recommended for native compilation)
 - Git
 - ripgrep (for project-wide search, `M-s r`)
+- GNU Global + ctags (optional — powers the citre `M-.` fallback index for code trees without LSP coverage)
 - Python 3.6+ with pip
 - Node.js 18+ and npm (for Copilot and typescript-language-server)
 - clangd (for C++ development; lsp-mode can auto-download it)
