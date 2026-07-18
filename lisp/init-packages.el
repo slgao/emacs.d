@@ -327,7 +327,10 @@ the original \"no definitions\" error instead of citre's internals."
 ;; config move-lines
 (require 'move-lines)
 
-;; add undo-tree mode
+;; add undo-tree mode. Don't persist history to disk: the default litters
+;; .~undo-tree~ files next to every edited file and slows down saving; the
+;; visual tree still works for the whole session.
+(setq undo-tree-auto-save-history nil)
 (global-undo-tree-mode)
 
 ;; add neotree mode

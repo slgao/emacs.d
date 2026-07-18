@@ -19,12 +19,7 @@
     (interactive)
     (find-file "~/.emacs.d/init.el"))
 
-  ;; packages in site-lisp folder (third party package)
-  ;; this is newer version nadvice.el (extended) which will overwrite the
-  ;; original nadvice.el
-  (require 'nadvice_)
-
-  ;; emacs init files 
+  ;; emacs init files
   (my/load-org-config "lisp/init-utils.org")
   (require 'init-packages)
   (require 'init-ui)
