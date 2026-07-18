@@ -53,6 +53,7 @@
                           lsp-ui
                           dap-mode
                           dockerfile-mode
+                          terraform-mode
                           jenkinsfile-mode
                           dotenv-mode
                           php-mode
