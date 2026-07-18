@@ -25,7 +25,7 @@
   (require 'nadvice_)
 
   ;; emacs init files 
-  (org-babel-load-file (expand-file-name "lisp/init-utils.org" user-emacs-directory))
+  (my/load-org-config "lisp/init-utils.org")
   (require 'init-packages)
   (require 'init-ui)
   (require 'init-org)

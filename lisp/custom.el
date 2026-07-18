@@ -47,7 +47,6 @@
  '(terraform-indent-level 2)
  '(timesheet-invoice-number 101)
  '(tool-bar-mode nil)
- '(tramp-syntax 'default nil (tramp))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    '((20 . "#F92672")

@@ -79,8 +79,9 @@
 ;; kbd for select current line
 (global-set-key (kbd "C-c s") 'select-current-line)
 
-;; yasnippet keybinding
-(define-key yas-minor-mode-map (kbd "<C-tab>")     'yas-ido-expand)
+;; yasnippet keybinding (yasnippet loads lazily with the first code buffer)
+(with-eval-after-load 'yasnippet
+  (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand))
 
 ;; key bindings for helm-gtags
 (with-eval-after-load 'helm-gtags

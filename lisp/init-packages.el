@@ -123,12 +123,11 @@
 ;;     (setenv "WORKON_HOME" "/anaconda3/envs")
 ;; )
 
-(pyvenv-mode 1)
-;; Activate the default env (if it exists on this machine) so pylsp is on exec-path
-;; for Python files that don't sit inside a project-level venv/.venv.
-(let ((default-venv (expand-file-name "~/my-python-envs/emacs-elpy-env")))
-  (when (file-directory-p default-venv)
-    (pyvenv-activate default-venv)))
+;; pyvenv loads lazily with the first python buffer (see the
+;; hack-local-variables-hook below) — loading it at startup drags in eshell
+;; (~0.5s). The default env makes pylsp visible on exec-path for python files
+;; that don't sit inside a project-level venv/.venv.
+(defvar my/pyvenv-default-env (expand-file-name "~/my-python-envs/emacs-elpy-env"))
 
 (setq python-shell-interpreter
       (if (eq system-type 'windows-nt) "python" "python3")
@@ -286,9 +285,12 @@
 ;; (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
 
-(require 'org-bullets)
-(setq org-bullets-face-name (quote org-bullet-face))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; org-bullets lives in site-lisp (no autoloads) — load it with the first
+;; org buffer instead of at startup
+(add-hook 'org-mode-hook (lambda ()
+                           (require 'org-bullets)
+                           (setq org-bullets-face-name 'org-bullet-face)
+                           (org-bullets-mode 1)))
 ;; (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
 
 ;; add cygwin path
@@ -300,10 +302,10 @@
 ;; (add-hook 'python-mode-hook 'py-autopep8-enable-on-save) ; commented out for efficiency
 (setq py-autopep8-options '("--max-line-length=100"))
 
-;; yasnippet minor mode config
-(require 'yasnippet)
-(yas-reload-all)
+;; yasnippet minor mode config: yas-minor-mode is autoloaded, so the package
+;; and its snippet tables (~0.7s) load with the first code buffer, not at startup
 (add-hook 'prog-mode-hook #'yas-minor-mode)
+(with-eval-after-load 'yasnippet (yas-reload-all))
 
 ;; sphinx-doc mode config
 (add-hook 'python-mode-hook (lambda ()
@@ -315,8 +317,8 @@
 (global-set-key (kbd "C-c u") 'clang-format-buffer)
 (setq clang-format-style-option "llvm")
 
-;; use flycheck for cython-mode
-(require 'flycheck-cython)
+;; use flycheck for cython-mode (checker registers when flycheck first loads)
+(with-eval-after-load 'flycheck (require 'flycheck-cython))
 (add-hook 'cython-mode-hook 'flycheck-mode)
 
 ;; config yaml-mode
@@ -328,18 +330,18 @@
 (require 'enaml)
 (setq auto-mode-alist (cons '("\\.enaml$" . enaml-mode) auto-mode-alist))
 
-;; js2-refactor and xref-js2 config
-(require 'js2-refactor)
-(require 'xref-js2)
+;; js2-refactor and xref-js2 config — loaded with js2-mode itself (first
+;; .js/.mjs file); eagerly they pull js2-mode+js+cc-mode (~0.7s) at startup
+(with-eval-after-load 'js2-mode
+  (require 'js2-refactor)
+  (require 'xref-js2)
+  (js2r-add-keybindings-with-prefix "C-c C-r")
+  (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+  ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref,
+  ;; so unbind it.
+  (define-key js-mode-map (kbd "M-.") nil))
 
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
-(js2r-add-keybindings-with-prefix "C-c C-r")
-(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
-;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
-;; unbind it.
-(define-key js-mode-map (kbd "M-.") nil)
-
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
 
 (add-hook 'js2-mode-hook (lambda ()
@@ -348,8 +350,11 @@
 ;; slime settings
 (setq inferior-lisp-program "sbcl")
 (require 'slime-autoloads)
-(slime-setup '(slime-fancy))
-(slime-setup '(slime-company))
+;; one call — each slime-setup call overwrites the previous contrib list.
+;; Deferred: running it eagerly loads slime+comint+etags at startup; the
+;; contribs are registered when slime itself first loads (M-x slime).
+(with-eval-after-load 'slime
+  (slime-setup '(slime-fancy slime-company)))
 
 ;; ;; lsp-mode config
 ;; ;; if you want to change prefix for lsp-mode keybindings.
@@ -365,6 +370,7 @@
 (add-hook 'hack-local-variables-hook
           (lambda ()
             (when (derived-mode-p 'python-mode)
+              (pyvenv-mode 1)          ; autoloaded; loads pyvenv on first use
               (let (venv)
                 (locate-dominating-file
                  default-directory
@@ -373,6 +379,11 @@
                                         (mapcar (lambda (name)
                                                   (expand-file-name name dir))
                                                 '("venv" ".venv"))))))
+                ;; no project venv and nothing active yet: fall back to the
+                ;; default env (if it exists on this machine) so pylsp is found
+                (unless (or venv pyvenv-virtual-env)
+                  (when (file-directory-p my/pyvenv-default-env)
+                    (setq venv my/pyvenv-default-env)))
                 (when venv (pyvenv-activate venv)))
               (lsp))))
 

@@ -157,8 +157,8 @@ python-nav-forward-sexp, costing up to seconds per call in large files."
   (end-of-line) ; move to end of line
   (set-mark (line-beginning-position)))
 
-;; show trailing white space
-(require 'whitespace)
+;; show trailing white space (takes effect when whitespace-mode is enabled;
+;; no need to load the package for the setting alone)
 (setq whitespace-style
       '(face trailing))
 
@@ -214,13 +214,15 @@ python-nav-forward-sexp, costing up to seconds per call in large files."
 ;; save). Git itself must stay enabled for diff-hl's fringe indicators.
 (setq vc-handled-backends '(Git))
 
-;; Run/highlight code using babel in org-mode
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (shell . t)
-   ;; Include other languages here ...
-   ))
+;; Run/highlight code using babel in org-mode. Registering languages loads
+;; their ob-* backends, so defer it until org itself loads.
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell . t)
+     ;; Include other languages here ...
+     )))
 
 ;; auto insert text for python file.
 (auto-insert-mode 1)
@@ -246,7 +248,8 @@ python-nav-forward-sexp, costing up to seconds per call in large files."
 
 
 ;; add this to quick insertion of org templates.
-(require 'org-tempo)
+;; load together with org itself, not at startup
+(with-eval-after-load 'org (require 'org-tempo))
 
 ;; add ruler at maximum column
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
@@ -265,12 +268,14 @@ python-nav-forward-sexp, costing up to seconds per call in large files."
   (setq web-mode-markup-indent-offset 4))
 (add-hook 'web-mode-hook  'web-mode-init-hook)
 
-;; disable default jslint
-(setq-default flycheck-disabled-checkers
-              (append flycheck-disabled-checkers
-                      '(javascript-jshint json-jsonlist)))
-;; Enable eslint checker for web-mode
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; flycheck loads lazily (with global-flycheck-mode at after-init), so defer
+;; the checker tweaks until then: disable default jslint, enable eslint in
+;; web-mode
+(with-eval-after-load 'flycheck
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint json-jsonlist)))
+  (flycheck-add-mode 'javascript-eslint 'web-mode))
 ;; Enable flycheck globally if not windows system.
 (if (not(eq system-type 'windows-nt))
     (add-hook 'after-init-hook #'global-flycheck-mode))

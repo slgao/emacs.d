@@ -236,15 +236,18 @@ Position the cursor at its beginning, according to the current mode."
 	(insert key)
         (yas-expand)))))
 
-(require 'ox-latex)
-(add-to-list 'org-latex-classes
-             '("beamer"
-               "\\documentclass\[presentation\]\{beamer\}"
-               ("\\section\{%s\}" . "\\section*\{%s\}")
-               ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
-               ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+;; deferred: requiring ox-latex here loads the whole org export stack (~2s)
+;; at startup; register the classes when the latex exporter actually loads
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("beamer"
+                 "\\documentclass\[presentation\]\{beamer\}"
+                 ("\\section\{%s\}" . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}"))))
 
-(add-to-list 'org-latex-classes
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
           '("bjmarticle"
             "\\documentclass{article}
 	    \\usepackage[utf8]{inputenc}
@@ -261,6 +264,6 @@ Position the cursor at its beginning, according to the current mode."
             ("\\subsection{%s}" . "\\subsection*{%s}")
             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
             ("\\paragraph{%s}" . "\\paragraph*{%s}")
-            ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+            ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (provide 'init-utils)
