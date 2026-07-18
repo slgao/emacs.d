@@ -339,7 +339,10 @@ the original \"no definitions\" error instead of citre's internals."
 ;; treemacs: project tree sidebar (replaces neotree), on F8. Loads lazily.
 (with-eval-after-load 'treemacs
   (treemacs-follow-mode 1)      ; keep the tree in sync with the current file
-  (treemacs-filewatch-mode 1))  ; auto-refresh on external file changes
+  (treemacs-filewatch-mode 1)   ; auto-refresh on external file changes
+  ;; include the treemacs window in the normal C-x o / ace-window rotation
+  ;; (by default it sets no-other-window and can only be entered via F8)
+  (setq treemacs-is-never-other-window nil))
 (setq inhibit-compacting-font-caches t)
 
 ;; tree-sitter major modes (built into Emacs 29+): faster, structurally
