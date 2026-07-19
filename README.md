@@ -75,6 +75,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Kill ring browser**: Enhanced clipboard management
 - **Undo tree**: Visual undo/redo system
 - **Treemacs**: Project tree sidebar (`F8`), follows the current file
+- **Markdown**: browser preview (`C-c C-c p`) via pandoc with GFM tables, live preview (`C-c C-c l`), highlighted code blocks in the buffer
 
 ## Configuration Structure
 
@@ -299,6 +300,26 @@ brew install ripgrep
 # Windows
 winget install BurntSushi.ripgrep.MSVC
 ```
+
+### Markdown preview (pandoc)
+
+`C-c C-c p` (browser preview) and `C-c C-c l` (live preview in Emacs) convert
+the buffer with pandoc, so GitHub-Flavored Markdown — tables, task lists,
+strikethrough — renders correctly. Install it once per machine:
+
+```bash
+# Linux
+sudo apt install pandoc
+
+# macOS
+brew install pandoc
+
+# Windows
+winget install JohnMacFarlane.Pandoc
+```
+
+Without pandoc the preview falls back to the legacy `markdown` converter,
+which does not understand tables.
 
 ### Terraform (lsp-mode)
 
