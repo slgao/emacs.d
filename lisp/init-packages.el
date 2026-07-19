@@ -761,5 +761,27 @@ the original \"no definitions\" error instead of citre's internals."
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
+;; markdown-mode preview (C-c C-c p): the default `markdown' converter
+;; predates GFM, so pipe tables render as plain text. Prefer pandoc (or
+;; multimarkdown) when installed, and style the generated HTML so tables
+;; get borders. Checked at load time per-machine, so this is a no-op on
+;; systems without pandoc.
+(with-eval-after-load 'markdown-mode
+  (cond ((executable-find "pandoc")
+         (setq markdown-command "pandoc -f gfm -t html5"))
+        ((executable-find "multimarkdown")
+         (setq markdown-command "multimarkdown")))
+  (setq markdown-fontify-code-blocks-natively t)
+  (setq markdown-xhtml-header-content
+        "<style>
+           body { font-family: sans-serif; max-width: 50em;
+                  margin: 2em auto; padding: 0 1em; line-height: 1.5; }
+           table { border-collapse: collapse; }
+           th, td { border: 1px solid #b0b0b0; padding: 0.3em 0.7em; }
+           th { background: #f0f0f0; }
+           pre { background: #f6f8fa; padding: 0.8em; overflow-x: auto; }
+           code { background: #f6f8fa; padding: 0.1em 0.3em; }
+         </style>"))
+
 (provide 'init-packages)
 ;;; init-package.el ends here
