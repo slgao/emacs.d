@@ -22,6 +22,7 @@
   ;; emacs init files
   (my/load-org-config "lisp/init-utils.org")
   (require 'init-packages)
+  (require 'init-markdown)
   (require 'init-ui)
   (require 'init-org)
   (require 'init-keybindings)

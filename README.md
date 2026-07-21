@@ -75,7 +75,7 @@ Then complete the one-time manual setup steps described below for each language/
 - **Kill ring browser**: Enhanced clipboard management
 - **Undo tree**: Visual undo/redo system
 - **Treemacs**: Project tree sidebar (`F8`), follows the current file
-- **Markdown**: browser preview (`C-c C-c p`) via pandoc with GFM tables, live preview (`C-c C-c l`), highlighted code blocks in the buffer
+- **Markdown**: styled browser preview (`C-c C-c p`) via pandoc — GFM tables, an editorial theme with a light/dark toggle, an auto-built table-of-contents sidebar, mermaid diagrams, and highlighted code blocks in the buffer
 
 ## Configuration Structure
 
@@ -86,6 +86,7 @@ Then complete the one-time manual setup steps described below for each language/
 ├── shulins_emacs_config.org   # Main configuration in org-babel format
 ├── lisp/                      # Modular configuration files
 │   ├── init-packages.el       # Package management and setup
+│   ├── init-markdown.el       # Markdown HTML-preview styling
 │   ├── init-ui.el            # UI and theme configuration
 │   ├── init-better-defaults.el # Sensible defaults
 │   ├── init-keybindings.el   # Custom key bindings
@@ -303,9 +304,10 @@ winget install BurntSushi.ripgrep.MSVC
 
 ### Markdown preview (pandoc)
 
-`C-c C-c p` (browser preview) and `C-c C-c l` (live preview in Emacs) convert
-the buffer with pandoc, so GitHub-Flavored Markdown — tables, task lists,
-strikethrough — renders correctly. Install it once per machine:
+`C-c C-c p` opens a styled browser preview; `C-c C-c l` gives a plain live
+preview inside Emacs (eww). Both convert the buffer with pandoc, so
+GitHub-Flavored Markdown — tables, task lists, strikethrough — renders
+correctly. Install pandoc once per machine:
 
 ```bash
 # Linux
@@ -320,6 +322,20 @@ winget install JohnMacFarlane.Pandoc
 
 Without pandoc the preview falls back to the legacy `markdown` converter,
 which does not understand tables.
+
+The browser preview (styling defined in `lisp/init-markdown.el`) adds:
+
+- an editorial theme with a **light/dark toggle** in the top bar (remembered
+  across previews), using the Fira Code webfont;
+- a **table-of-contents sidebar** auto-built from the `##`/`###` headings,
+  with sections numbered consistently between the sidebar and the headings;
+- **mermaid diagrams** — fenced ` ```mermaid ` blocks render as SVG on a
+  white card so they stay readable in either theme.
+
+The webfont and mermaid.js load from CDNs, so the full look needs a network
+connection while previewing; text still renders offline with system fonts.
+The in-Emacs live preview (`C-c C-c l`) has no JavaScript, so use the browser
+preview for the toggle, TOC, and diagrams.
 
 ### Terraform (lsp-mode)
 
