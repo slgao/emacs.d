@@ -87,6 +87,9 @@
                     display:grid; grid-template-columns:1fr; gap:2rem; }
            @media (min-width:960px) { .shell { grid-template-columns:220px 1fr; gap:3rem;
                                                align-items:start; } }
+           /* no headings -> no sidebar: keep <main> full width, don't wedge it
+              into the 220px column that the two-column grid still reserves */
+           .shell.no-toc { grid-template-columns:1fr; }
            .toc { display:none; }
            @media (min-width:960px) {
              .toc { display:block; position:sticky; top:78px; font-family:var(--font-mono);
@@ -197,6 +200,10 @@
              });
            } else if (toc) {
              toc.remove();
+             // collapse the grid so <main> spans the full width instead of the
+             // 220px sidebar column the two-column layout still reserves
+             const shell = document.querySelector('.shell');
+             if (shell) shell.classList.add('no-toc');
            }
 
            // normalise pandoc's <pre class=mermaid><code>...</code></pre> into
